@@ -7,9 +7,11 @@ const GuitarFretboard = () => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
 
+
         // Define constants
         const stringCount = 6; // number of strings on guitar
         const fretCount = 12; // number of frets on guitar
+        const clickableSectionCount = 13; // number of clickable sections
         const fretWidth = 40; // width of each fret
         const fretHeight = 20; // height of each fret
         const openStringSectionWidth = 80; // width of the open string section
@@ -22,19 +24,22 @@ const GuitarFretboard = () => {
         const bottomStringOffset = stringCount * fretHeight * 0.1; // offset for the bottom string
         const totalStringHeight = neckHeight - topStringOffset - bottomStringOffset;
         const stringSpacing = totalStringHeight / (stringCount - 1); // vertical spacing between strings
-        const squareSize = 20; // size of the colored squares
+        const squareSize = 50; // size of the colored squares
 
         // Function to draw colored squares representing clickable sections
         const drawClickableSections = () => {
-            ctx.fillStyle = 'red'; // Change color as needed
-            for (let fret = 1; fret <= fretCount; fret++) {
+            ctx.fillStyle = 'rgba(200, 0, 0, 0.5)'; // Change color as needed
+            for (let fret = 1; fret <= clickableSectionCount + 1; fret++) {
+                // Calculate the x position with an offset for the first column
+                const offsetX = fret === 1 ? openStringSectionWidth * 0.25 : 0;
                 for (let string = 1; string <= stringCount; string++) {
-                    const squareX = neckX + (fret * fretSpacing) - (fretSpacing / 2) - (squareSize / 2);
+                    const squareX = neckX + (fret * fretSpacing) - (fretSpacing * 1.5) - (squareSize / 2) + offsetX;
                     const squareY = neckY + (string - 1) * stringSpacing + topStringOffset - (squareSize / 2);
                     ctx.fillRect(squareX, squareY, squareSize, squareSize);
                 }
             }
         };
+
 
         // Function to draw fret markers
         const drawFretMarkers = () => {
@@ -51,7 +56,31 @@ const GuitarFretboard = () => {
             });
         };
 
-        // Function to handle mouse click event
+        const calculateNote = (fret, string) => {
+
+            const stringNotes = [
+                ['E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#'],
+                ['B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#'],
+                ['G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#'],
+                ['D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#'],
+                ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'],
+                ['E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#']
+            ];
+
+            // Define the octave number for each string in standard tuning
+            const stringOctaves = [2, 2, 3, 3, 3, 4];
+
+            // Get the note for the given fret and string
+            const noteIndex = (fret - 1) % stringNotes[string - 1].length;
+            const noteName = stringNotes[string - 1][noteIndex];
+
+            // Get the octave for the given string
+            const octave = stringOctaves[string - 1];
+
+            return `${noteName}${octave}`; // Return note name with octave number
+        };
+
+
         // Function to handle mouse click event
         const handleClick = (event) => {
             const rect = canvas.getBoundingClientRect();
@@ -59,15 +88,17 @@ const GuitarFretboard = () => {
             const y = event.clientY - rect.top;
 
             // Check if the click is within the bounds of any clickable section
-            for (let fret = 1; fret <= fretCount; fret++) {
+            for (let fret = 1; fret <= clickableSectionCount; fret++) {
+                const offsetX = fret === 1 ? openStringSectionWidth * 0.25 : 0;
+
                 for (let string = 1; string <= stringCount; string++) {
-                    const squareX = neckX + (fret * fretSpacing) - (fretSpacing / 2) - (squareSize / 2);
+                    const squareX = neckX + (fret * fretSpacing) - (fretSpacing * 1.5) - (squareSize / 2) + offsetX;
                     const squareY = neckY + (string - 1) * stringSpacing + topStringOffset - (squareSize / 2);
                     if (x >= squareX && x <= squareX + squareSize && y >= squareY && y <= squareY + squareSize) {
-                        // Draw the note name in a circle
-                        const markerX = neckX + (fret * fretSpacing) - (fretSpacing / 2);
+                        // Draw the note name with octave number
+                        const markerX = squareX + (squareSize / 2); // Corrected calculation
                         const markerY = neckY + (string - 1) * stringSpacing + topStringOffset;
-                        const markerRadius = 10;
+                        const markerRadius = squareSize * 0.5;
                         ctx.fillStyle = 'white';
                         ctx.beginPath();
                         ctx.arc(markerX, markerY, markerRadius, 0, 2 * Math.PI);
@@ -76,13 +107,13 @@ const GuitarFretboard = () => {
                         ctx.font = '14px Arial';
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'middle';
-                        ctx.fillText('C', markerX, markerY); // Change note name as needed
+                        const note = calculateNote(fret, string); // Calculate note name with octave
+                        ctx.fillText(note, markerX, markerY); // Display note name with octave
                         return; // Exit the function after finding the matching clickable section
                     }
                 }
             }
         };
-
 
         // Set canvas dimensions
         canvas.width = canvas.clientWidth;
