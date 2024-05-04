@@ -37,7 +37,7 @@ const IdentifyChord = () => {
     };
 
     return (
-        <div style={{height: "100%", width: "100%", backgroundColor: "teal", overflow: 'auto'}}>
+        <div style={{height: "100%", width: "100%", backgroundColor: "green", overflow: 'auto'}}>
             <div>
                 {["C", "Db", "C#", "D", "Eb", "D#", "E", "F", "Gb", "F#", "G", "Ab", "G#", "A", "Bb", "A#", "B"].map((note) => (
                     <div key={note}>

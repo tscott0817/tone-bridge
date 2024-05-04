@@ -1,12 +1,14 @@
 import React, { useRef, useEffect } from 'react';
+import { useNoteContext } from "../stateManager/NoteContext";
+import {Note} from "tonal";
 
 const GuitarFretboard = () => {
     const canvasRef = useRef(null);
+    const { selectedNotes } = useNoteContext();
 
     useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
-
 
         // Define constants
         const stringCount = 6; // number of strings on guitar
@@ -14,17 +16,18 @@ const GuitarFretboard = () => {
         const clickableSectionCount = 13; // number of clickable sections
         const fretWidth = 40; // width of each fret
         const fretHeight = 20; // height of each fret
-        const openStringSectionWidth = 80; // width of the open string section
+        const openStringSectionWidth = canvas.width * .05; // width of the open string section
         const neckWidth = canvas.width - openStringSectionWidth; // width of the neck background
         const neckHeight = canvas.height - fretHeight; // height of the neck background
         const neckX = openStringSectionWidth; // x position of the neck background
         const neckY = fretHeight * 0.5; // y position of the neck background
         const fretSpacing = neckWidth / fretCount; // horizontal spacing between frets
-        const topStringOffset = stringCount * fretHeight * 0.1; // offset for the top string
-        const bottomStringOffset = stringCount * fretHeight * 0.1; // offset for the bottom string
+        const topStringOffset = stringCount * fretHeight * 0.25; // offset for the top string
+        const bottomStringOffset = stringCount * fretHeight * 0.25; // offset for the bottom string
         const totalStringHeight = neckHeight - topStringOffset - bottomStringOffset;
         const stringSpacing = totalStringHeight / (stringCount - 1); // vertical spacing between strings
-        const squareSize = 50; // size of the colored squares
+        // const squareSize = canvas.width * 0.05; // size of the colored squares
+        const squareSize = Math.min(canvas.width * 0.05, 50);
 
         // Function to draw colored squares representing clickable sections
         const drawClickableSections = () => {
@@ -59,25 +62,19 @@ const GuitarFretboard = () => {
         const calculateNote = (fret, string) => {
 
             const stringNotes = [
-                ['E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#'],
-                ['B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#'],
-                ['G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#'],
-                ['D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#'],
-                ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'],
-                ['E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#']
+                Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(64 + i))),  // E4 to E5
+                Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(59 + i))), // B3 to B4
+                Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(55 + i))), // G3 to G4
+                Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(50 + i))), // D3 to D4
+                Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(45 + i))), // A2 to A3
+                Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(40 + i))), // E2 to E3
             ];
-
-            // Define the octave number for each string in standard tuning
-            const stringOctaves = [2, 2, 3, 3, 3, 4];
 
             // Get the note for the given fret and string
             const noteIndex = (fret - 1) % stringNotes[string - 1].length;
             const noteName = stringNotes[string - 1][noteIndex];
 
-            // Get the octave for the given string
-            const octave = stringOctaves[string - 1];
-
-            return `${noteName}${octave}`; // Return note name with octave number
+            return `${noteName}`;
         };
 
 
@@ -89,17 +86,19 @@ const GuitarFretboard = () => {
 
             // Check if the click is within the bounds of any clickable section
             for (let fret = 1; fret <= clickableSectionCount; fret++) {
-                const offsetX = fret === 1 ? openStringSectionWidth * 0.25 : 0;
+                const offsetX = fret === 1 ? openStringSectionWidth * 0.275 : 0;
 
                 for (let string = 1; string <= stringCount; string++) {
                     const squareX = neckX + (fret * fretSpacing) - (fretSpacing * 1.5) - (squareSize / 2) + offsetX;
+                    // const squareX = neckX + (fret * fretSpacing) - (fretSpacing * 1.5) - (squareSize / 2) + offsetX;
                     const squareY = neckY + (string - 1) * stringSpacing + topStringOffset - (squareSize / 2);
                     if (x >= squareX && x <= squareX + squareSize && y >= squareY && y <= squareY + squareSize) {
                         // Draw the note name with octave number
                         const markerX = squareX + (squareSize / 2); // Corrected calculation
                         const markerY = neckY + (string - 1) * stringSpacing + topStringOffset;
                         const markerRadius = squareSize * 0.5;
-                        ctx.fillStyle = 'white';
+                        // ctx.fillStyle = 'white';
+                        ctx.fillStyle = 'rgba(255, 150, 150, 0.75)';
                         ctx.beginPath();
                         ctx.arc(markerX, markerY, markerRadius, 0, 2 * Math.PI);
                         ctx.fill();
@@ -156,7 +155,7 @@ const GuitarFretboard = () => {
         drawFretMarkers();
 
         // Draw clickable sections
-        drawClickableSections();
+        // drawClickableSections();
 
         // Add click event listener to the canvas
         canvas.addEventListener('click', handleClick);
