@@ -37,7 +37,14 @@ const IdentifyChord = () => {
     };
 
     return (
-        <div style={{height: "100%", width: "100%", backgroundColor: "green", overflow: 'auto'}}>
+        <div style={{
+            height: "100%",
+            width: "100%",
+            backgroundColor: "green",
+            display: "flex",
+            flexDirection: "row",
+            overflow: 'auto'
+        }}>
             <div>
                 {["C", "Db", "C#", "D", "Eb", "D#", "E", "F", "Gb", "F#", "G", "Ab", "G#", "A", "Bb", "A#", "B"].map((note) => (
                     <div key={note}>
@@ -54,20 +61,24 @@ const IdentifyChord = () => {
                         ))}
                     </div>
                 ))}
-                <button onClick={playChord}>
-                    Play Current Chord
-                </button>
-                <button onClick={handleClear}>Clear All</button>
             </div>
             <div>
-                <p>Selected Notes: {selectedNotes.join(", ")}</p>
-                <p>Detected Chords:</p>
-                {Chord.detect(selectedNotes).map((chord, index) => (
-                    <p key={index}>{chord}</p>
-                ))}
-            </div>
-            <div>
-                <p>Global Notes: {selectedNotes.join(", ")}</p>
+                <div>
+                    <p>Selected Notes: {selectedNotes.join(", ")}</p>
+                    <p>Detected Chords:</p>
+                    {Chord.detect(selectedNotes).map((chord, index) => (
+                        <p key={index}>{chord}</p>
+                    ))}
+                </div>
+                <div>
+                    <p>Global Notes: {selectedNotes.join(", ")}</p>
+                </div>
+                <div>
+                    <button onClick={playChord}>
+                        Play Current Chord
+                    </button>
+                    <button onClick={handleClear}>Clear All</button>
+                </div>
             </div>
         </div>
     );
