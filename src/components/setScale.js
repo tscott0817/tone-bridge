@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
-import { Scale } from "tonal";
-import { useNoteContext } from "../stateManager/NoteContext"; // Import the NoteContext
+import {useNoteContext} from "../stateManager/NoteContext"; // Import the NoteContext
+import {Scale, ScaleType} from 'tonal';
 
 const SetScale = () => {
-    const { selectedNotes, selectNote, unselectNote, setRootNote, rootNote } = useNoteContext(); // Use the NoteContext
+    const {selectedNotes, selectNote, unselectNote, setRootNote, rootNote} = useNoteContext(); // Use the NoteContext
     const [keyNote, setKeyNote] = useState("C");
     const [scaleType, setScaleType] = useState("major");
 
@@ -33,14 +33,23 @@ const SetScale = () => {
     };
 
     useEffect(() => {
-        // This is just to the guitar updates every time a new note is added outside of the guitar component
+        // This is just so the guitar updates every time a new note is added outside of the component
     }, [selectedNotes]);
 
     return (
-        <div style={{backgroundColor: 'palegoldenrod', height: '100%', width: "100%", overflow: 'auto'}}>
-            <h3>Set Scale</h3>
+        <div style={{
+            backgroundColor: 'palegoldenrod',
+            height: '100%',
+            width: "100%",
+            overflow: 'auto',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '10px'
+        }}>
             <div>
-                <label htmlFor="keyNote">Keynote:</label>
+                <label htmlFor="keyNote">Tonic: </label>
                 <select id="keyNote" value={keyNote} onChange={handleKeyNoteChange}>
                     {["C", "Db", "C#", "D", "Eb", "D#", "E", "F", "Gb", "F#", "G", "Ab", "G#", "A", "Bb", "A#", "B"].map((note) => (
                         <option key={note} value={note}>{note}</option>
@@ -48,16 +57,14 @@ const SetScale = () => {
                 </select>
             </div>
             <div>
-                <label htmlFor="scaleType">Scale Type:</label>
+                <label htmlFor="scaleType">Scale Type: </label>
                 <select id="scaleType" value={scaleType} onChange={handleScaleTypeChange}>
-                    <option value="major">Major</option>
-                    <option value="minor">Minor</option>
-                    <option value="dorian">Dorian</option>
-                    {/* Add other scale types as needed */}
+                    {ScaleType.names().map((name) => (
+                        <option key={name} value={name}>{name}</option>
+                    ))}
                 </select>
             </div>
             <button onClick={setScale}>Set Scale</button>
-            <div>Root Note: {rootNote}</div>
         </div>
     );
 };

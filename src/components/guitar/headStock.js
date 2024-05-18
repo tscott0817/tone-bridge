@@ -6,6 +6,7 @@ const Headstock = () => {
     const { selectedNotes, selectNote, unselectNote, rootNote } = useNoteContext();
 
     // Define the strings and their corresponding MIDI note numbers
+    // TODO: Need to make strings changable
     const strings = [
         { string: 1, midiNote: 64 }, // High E
         { string: 2, midiNote: 59 }, // B

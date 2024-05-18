@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
-import { Chord } from "tonal";
-import { useNoteContext } from "../stateManager/NoteContext"; // Import the NoteContext
+import {Chord} from "tonal";
+import {useNoteContext} from "../stateManager/NoteContext"; // Import the NoteContext
 
 const SetChord = () => {
-    const { selectedNotes, selectNote, unselectNote, setRootNote, rootNote } = useNoteContext(); // Use the NoteContext
+    const {selectedNotes, selectNote, unselectNote, setRootNote, rootNote} = useNoteContext(); // Use the NoteContext
     const [root, setRoot] = useState("C");
     const [chordType, setChordType] = useState("maj");
     const [chordName, setChordName] = useState("Cmaj");
@@ -42,10 +42,19 @@ const SetChord = () => {
 
 
     return (
-        <div style={{ backgroundColor: 'lightblue', height: '100%', width: "100%",overflow: 'auto' }}>
-            <h3>Set Chord</h3>
+        <div style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'lightblue',
+            height: '100%',
+            width: "100%",
+            overflow: 'auto',
+            gap: '10px'
+        }}>
             <div>
-                <label htmlFor="root">Root:</label>
+                <label htmlFor="root">Root: </label>
                 <select id="root" value={root} onChange={handleRootChange}>
                     {["C", "Db", "C#", "D", "Eb", "D#", "E", "F", "Gb", "F#", "G", "Ab", "G#", "A", "Bb", "A#", "B"].map((note) => (
                         <option key={note} value={note}>{note}</option>
@@ -53,7 +62,7 @@ const SetChord = () => {
                 </select>
             </div>
             <div>
-                <label htmlFor="chordType">Chord Type:</label>
+                <label htmlFor="chordType">Chord Type: </label>
                 <select id="chordType" value={chordType} onChange={handleChordTypeChange}>
                     <option value="major">Major</option>
                     <option value="major seventh">Maj7</option>
@@ -86,20 +95,17 @@ const SetChord = () => {
                     <option value="suspended fourth seventh">7sus4</option>
                     <option value="eleventh">11</option>
                     <option value="suspended fourth flat ninth">7b9sus4</option>
-
-                    {/* Add other chord types as needed */}
                 </select>
             </div>
+            {/*<div>*/}
+            {/*    <label htmlFor="chordType">Chord Type:</label>*/}
+            {/*    <select id="chordType" value={chordType} onChange={handleChordTypeChange}>*/}
+            {/*        <option value="major">Major</option>*/}
+            {/*        <option value="major seventh">Maj7</option>*/}
+            {/*        /!* Add other options *!/*/}
+            {/*    </select>*/}
+            {/*</div>*/}
             <button onClick={setChord}>Set Chord</button>
-            <div>Root Note: {rootNote}</div>
-            <div>Chord Name: {chordName}</div>
-            <div>Selected Notes:
-                <ul>
-                    {selectedNotes.map((note, index) => (
-                        <li key={index}>{note}</li>
-                    ))}
-                </ul>
-            </div>
         </div>
     );
 };
