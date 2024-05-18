@@ -3,8 +3,8 @@ import './App.css';
 import IdentifyChord from "./components/identifyChord";
 import { NoteProvider } from "./stateManager/NoteContext";
 import Guitar from "./components/guitar/guitar";
-import QuickDisplay from "./components/quickDisplay";
-// import Guitar from "./components/guitar/guitarBest";
+import SetScale from "./components/setScale";
+import SetChord from "./components/setChord";
 
 
 /**
@@ -24,15 +24,15 @@ function App() {
         <div className="App">
             <NoteProvider>
                 <div style={{width: '100vw', height: '100vh', backgroundColor: 'pink', display: 'flex', flexDirection: 'column'}}>
-                    <div style={{height: '325px', minHeight: '325px', minWidth: '1000px', backgroundColor: 'teal', padding: '10px', overflow: 'hidden'}}>
-                        {/*<GuitarFretboard/>*/}
+                    <div style={{flex: 1, height: '325px', minHeight: '375px', minWidth: '1000px', backgroundColor: 'teal', padding: '10px', overflow: 'hidden'}}>
                         {<Guitar />}
                     </div>
-                    {/*<div style={{width: '100%',backgroundColor: 'green', marginTop: '10px'}}>*/}
-                    {/*    <QuickDisplay />*/}
-                    {/*</div>*/}
-                    <div style={{flex: 1, height: '100%', minWidth: '1000px', backgroundColor: 'red', padding: '10px', overflow: 'hidden'}}>
-                        <IdentifyChord/>
+                    <div style={{height: '40%', bottom: 0, minWidth: '1000px', backgroundColor: 'red', padding: '10px', overflow: 'hidden'}}>
+                        <div style={{display: 'flex', height: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
+                            <IdentifyChord/>
+                            <SetScale />
+                            <SetChord />
+                        </div>
                     </div>
                 </div>
 

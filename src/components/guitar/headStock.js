@@ -3,7 +3,7 @@ import { useNoteContext } from "../../stateManager/NoteContext";
 import { Note } from "tonal";
 
 const Headstock = () => {
-    const { selectedNotes, selectNote, unselectNote } = useNoteContext();
+    const { selectedNotes, selectNote, unselectNote, rootNote } = useNoteContext();
 
     // Define the strings and their corresponding MIDI note numbers
     const strings = [
@@ -24,6 +24,19 @@ const Headstock = () => {
         }
     };
 
+    const setNoteColor = (note) => {
+        const rootString = rootNote.substring(0, rootNote.length); // Remove the octave number
+        const noteString = note.substring(0, note.length - 1); // Remove the octave number
+        const isSelected = selectedNotes.includes(note);
+        if (isSelected && rootString === noteString) {
+            return 'red'; // Highlight root note in red
+        } else if (isSelected) {
+            return 'teal'; // Highlight other selected notes in teal
+        } else {
+            return 'rgba(168, 193, 221, 0.8)'; // Default color for unselected notes
+        }
+    };
+
     useEffect(() => {
         // This is just to the guitar updates every time a new note is added outside of the guitar component
     }, [selectedNotes]);
@@ -33,12 +46,7 @@ const Headstock = () => {
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             position: 'relative',
             width: '100%',
-            // height: '100%',
-            // display: 'flex',
-            // flexDirection: 'column',
-            // justifyContent: 'center',
-            // justifyContent: 'space-between',
-            // padding: '10px'
+
         }}>
             {strings.map(({ string, midiNote }) => {
                 const note = Note.name(Note.fromMidi(midiNote));
@@ -47,7 +55,7 @@ const Headstock = () => {
                     height: '45px',
                     border: '1px solid black',
                     borderRadius: '50%',
-                    backgroundColor: selectedNotes.includes(note) ? 'teal' : 'rgba(168, 193, 221, 0.8)',
+                    backgroundColor: setNoteColor(note),
                     margin: 'auto',
                     marginTop: '2px',
                     marginBottom: '7px',

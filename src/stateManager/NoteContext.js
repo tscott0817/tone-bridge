@@ -5,21 +5,21 @@ const NoteContext = createContext(undefined);
 const NoteReducer = (state, action) => {
     switch (action.type) {
         case 'SELECT_NOTE':
-            return [...state, action.payload];
+            return { ...state, selectedNotes: [...state.selectedNotes, action.payload] };
         case 'UNSELECT_NOTE':
-            return state.filter(note => note !== action.payload);
+            return { ...state, selectedNotes: state.selectedNotes.filter(note => note !== action.payload) };
+        case 'SET_ROOT_NOTE':
+            return { ...state, rootNote: action.payload };
         default:
             return state;
     }
 };
 
 const NoteProvider = ({ children }) => {
-    const [selectedNotes, dispatch] = useReducer(NoteReducer, []);
+    const [state, dispatch] = useReducer(NoteReducer, { selectedNotes: [], rootNote: " " });
 
     const selectNote = (note) => {
-        // Check if the Note is not already in the selectedNotes array
-        if (!selectedNotes.includes(note)) {
-            // Dispatch the action to update the state
+        if (!state.selectedNotes.includes(note)) {
             dispatch({ type: 'SELECT_NOTE', payload: note });
         } else {
             console.log('Note is already selected.');
@@ -30,9 +30,13 @@ const NoteProvider = ({ children }) => {
         dispatch({ type: 'UNSELECT_NOTE', payload: note });
     };
 
+    const setRootNote = (rootNote) => {
+        dispatch({ type: 'SET_ROOT_NOTE', payload: rootNote });
+    };
+
     return (
         <NoteContext.Provider
-            value={{ selectedNotes, selectNote, unselectNote }}
+            value={{ selectedNotes: state.selectedNotes, rootNote: state.rootNote, selectNote, unselectNote, setRootNote }}
         >
             {children}
         </NoteContext.Provider>
@@ -42,7 +46,7 @@ const NoteProvider = ({ children }) => {
 const useNoteContext = () => {
     const context = useContext(NoteContext);
     if (!context) {
-        throw new Error('useNoteContext must be used within an NoteProvider');
+        throw new Error('useNoteContext must be used within a NoteProvider');
     }
     return context;
 };
