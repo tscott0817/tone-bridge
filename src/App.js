@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import PlayChord from "./components/playChord";
+import PlayNotes from "./components/playNotes";
 import { NoteProvider } from "./stateManager/NoteContext";
 import Guitar from "./components/guitar/guitar";
 import SetScale from "./components/setScale";
@@ -47,7 +47,7 @@ function App() {
                         <SetChord/>
                     </div>
                     <div style={{
-                        height: '325px',
+                        height: '400px',
                         minHeight: '375px',
                         minWidth: '1000px',
                         backgroundColor: 'teal',
@@ -66,7 +66,7 @@ function App() {
                         padding: '10px'
                     }}>
                         <DetectChord/>
-                        <PlayChord/>
+                        <PlayNotes/>
                     </div>
                 </div>
 

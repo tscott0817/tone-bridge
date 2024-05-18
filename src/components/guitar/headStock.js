@@ -1,19 +1,23 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNoteContext } from "../../stateManager/NoteContext";
 import { Note } from "tonal";
 
-const Headstock = () => {
+const Headstock = ({openNotesProp}) => {
     const { selectedNotes, selectNote, unselectNote, rootNote } = useNoteContext();
+    const [openNotes, setOpenNotes] = useState(openNotesProp);
+    useEffect(() => {
+        setOpenNotes(openNotesProp);
+    }, [openNotesProp]);
 
     // Define the strings and their corresponding MIDI note numbers
     // TODO: Need to make strings changable
     const strings = [
-        { string: 1, midiNote: 64 }, // High E
-        { string: 2, midiNote: 59 }, // B
-        { string: 3, midiNote: 55 }, // G
-        { string: 4, midiNote: 50 }, // D
-        { string: 5, midiNote: 45 }, // A
-        { string: 6, midiNote: 40 }  // Low E
+        { string: 1, midiNote: openNotes[5]}, // High E
+        { string: 2, midiNote: openNotes[4]}, // B
+        { string: 3, midiNote: openNotes[3]}, // G
+        { string: 4, midiNote: openNotes[2]}, // D
+        { string: 5, midiNote: openNotes[1]}, // A
+        { string: 6, midiNote: openNotes[0]}  // Low E
     ];
 
     // Function to handle string click

@@ -2,7 +2,7 @@ import React from "react";
 import * as Tone from 'tone';
 import { useNoteContext } from "../stateManager/NoteContext"; // Import the NoteContext
 
-const PlayChord = () => {
+const PlayNotes = () => {
     const { selectedNotes, selectNote, unselectNote, setRootNote } = useNoteContext(); // Use the NoteContext
 
     const handleNoteClick = (note, octave) => {
@@ -19,13 +19,13 @@ const PlayChord = () => {
         setRootNote(" ");
     };
 
-    const playChord = () => {
+    const playNotesSynth = () => {
         // Create a polyphonic synthesizer
         const polySynth = new Tone.PolySynth().toDestination();
 
         // Apply audio effects
-        const compressor = new Tone.Compressor(-30, 3).toDestination(); // Apply compression
-        const eq = new Tone.EQ3(-10, -10, -10).toDestination(); // Apply equalization
+        const compressor = new Tone.Compressor(-30, 3).toDestination();
+        const eq = new Tone.EQ3(-10, -10, -10).toDestination();
 
         // Connect the synthesizer to the effects chain
         polySynth.connect(compressor);
@@ -47,8 +47,8 @@ const PlayChord = () => {
             justifyContent: 'center'
         }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <button onClick={playChord}>
-                    Play Current Chord
+                <button onClick={playNotesSynth}>
+                    Play Current Notes
                 </button>
                 <button onClick={handleClear}>Clear All</button>
             </div>
@@ -56,4 +56,4 @@ const PlayChord = () => {
     );
 };
 
-export default PlayChord;
+export default PlayNotes;

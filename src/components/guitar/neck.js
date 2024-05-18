@@ -1,26 +1,25 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import { useNoteContext } from "../../stateManager/NoteContext";
 import { Note } from "tonal";
 import woodImage from '../../img/wood.png';
 
-const Neck = () => {
+const Neck = ({ openNotesProp }) => {
     const { selectedNotes, selectNote, unselectNote, rootNote } = useNoteContext();
+    const [openNotes, setOpenNotes] = useState(openNotesProp);
+    useEffect(() => {
+        setOpenNotes(openNotesProp);
+    }, [openNotesProp]);
+
     const numFrets = 12;
-    const openLowE = 41;
-    const openA = 46;
-    const openD = 51;
-    const openG = 56;
-    const openB = 60;
-    const openHighE = 65;
-    const openNotes = [openLowE, openA, openD, openG, openB, openHighE];
-    const stringNotes = [
-        Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[5] + i))),  // E4 to E5
-        Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[4] + i))), // B3 to B4
-        Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[3] + i))), // G3 to G4
-        Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[2] + i))), // D3 to D4
-        Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[1] + i))), // A2 to A3
-        Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[0] + i))), // E2 to E3
-    ];
+
+    const stringNotes = useMemo(() => [
+        Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[5] + 1 + i))), // Need offset by 1 to get the correct note
+        Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[4] + 1 + i))),
+        Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[3] + 1 + i))),
+        Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[2] + 1 + i))),
+        Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[1] + 1 + i))),
+        Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[0] + 1 + i))),
+    ], [openNotes]);
 
     const calculateNote = (fret, string) => {
         const noteIndex = (fret) % stringNotes[string - 1].length;

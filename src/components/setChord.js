@@ -25,7 +25,7 @@ const SetChord = () => {
             return notes;
         });
         const chord = Chord.get(`${root}${chordType}`).name;
-        setChordName(chord);
+        // setChordName(chord);
 
         setRootNote(`${root}`); // Set the root note
 
