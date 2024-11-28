@@ -12,7 +12,6 @@ const FretNumbers = () => {
             display: 'flex',
             flexDirection: 'row',
             marginTop: '10px',
-            // backgroundColor: 'orange',
         }}>
             {/* Move 0 away from far left */}
             <div style={{width: '5%', fontSize: '25px'}}>0</div>

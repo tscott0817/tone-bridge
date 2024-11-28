@@ -16,7 +16,15 @@ const DetectChord = () => {
     }, [selectedNotes]);
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: 'lightblue', height: '100%', width: "100%", overflow: 'auto', marginBottom: '2%' }}>
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: 'lightblue',
+            height: '100%',
+            width: "100%",
+            overflow: 'auto',
+            //marginBottom: '2%'
+        }}>
             <h3>Detected Chords</h3>
             <div>
                 Chords: {chordNames.length > 0 ? chordNames.join(' | ') : 'No chord detected'}

@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {useNoteContext} from "../../stateManager/NoteContext";
+import {useNoteContext} from "../stateManager/NoteContext";
 import { Note } from "tonal";
-import Neck from "./neck";
-import HeadStock from "./headStock";
-import FretNumbers from "./fretNumbers";
+import Neck from "./guitar/neck";
+import HeadStock from "./guitar/headStock";
+import FretNumbers from "./guitar/fretNumbers";
 
 const Guitar = () => {
     const initialNotes = [40, 45, 50, 55, 59, 64];
@@ -32,7 +32,8 @@ const Guitar = () => {
             flexDirection: 'column',
             // backgroundColor: 'pink',
         }}>
-            <div className="noteNamesContainer" style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginBottom: '10px', height: '200px', textAlign: 'center'}}>
+            {/* TODO: Might be better separate out from guitar */}
+            <div className="noteNamesContainer" style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', backgroundColor: 'blue', marginBottom: '10px', height: '200px', textAlign: 'center'}}>
                 {noteNames.map((name, index) => (
                     <div key={index} style={{margin: '5px', display: 'inline-block'}}>
                         <button onClick={() => decrementNote(index)}>-</button>
@@ -47,7 +48,7 @@ const Guitar = () => {
             <div className="guitarContainer" style={{
                 height: '100%',
                 width: '100%',
-                // backgroundColor: '#a36233',
+                backgroundColor: 'red',
                 display: 'flex',
                 flexDirection: 'row',
             }}>
@@ -70,7 +71,16 @@ const Guitar = () => {
                     <Neck openNotesProp={openNotes}/>
                 </div>
             </div>
-            <FretNumbers/>
+            <div className="fretNumbersContainer" style={{
+                height: '100%',
+                width: '100%',
+                //margin: '10%',
+                backgroundColor: 'orange',
+                display: 'flex',
+                flexDirection: 'row',
+            }}>
+                <FretNumbers/>
+            </div>
         </div>
     );
 };

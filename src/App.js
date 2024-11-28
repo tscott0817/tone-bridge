@@ -2,10 +2,12 @@ import logo from './logo.svg';
 import './App.css';
 import PlayNotes from "./components/playNotes";
 import { NoteProvider } from "./stateManager/NoteContext";
-import Guitar from "./components/guitar/guitar";
+import Guitar from "./components/guitar";
 import SetScale from "./components/setScale";
 import SetChord from "./components/setChord";
 import DetectChord from "./components/detectChord";
+import DisplayNotes from "./components/DisplayNotes";
+// import ChordBuilder from "./components/chordBuilder";
 
 
 /**
@@ -20,6 +22,7 @@ import DetectChord from "./components/detectChord";
  *
  */
 function App() {
+    const minWidth = '1000px';
 
     return (
         <div className="App">
@@ -33,10 +36,10 @@ function App() {
                     overflow: 'auto'
                 }}>
                     <div style={{
-                        height: '10%',
+                        //height: '10%',
                         minHeight: '50px',
-                        bottom: 0,
-                        minWidth: '1000px',
+                        // bottom: 0,
+                        minWidth: minWidth,
                         backgroundColor: 'red',
                         padding: '10px',
                         overflow: 'hidden',
@@ -48,10 +51,11 @@ function App() {
                     </div>
                     <div style={{
                         height: '400px',
-                        minHeight: '375px',
-                        minWidth: '1000px',
+                        minHeight: '425px',
+                        minWidth: minWidth,
                         backgroundColor: 'teal',
                         padding: '10px',
+                        //marginBottom: '10px',
                         overflow: 'hidden'
                     }}>
                         <Guitar/>
@@ -59,14 +63,25 @@ function App() {
                     <div style={{
                         display: 'flex',
                         flexDirection: 'row',
-                        height: '20%',
+                        //height: '20%',
                         minHeight: '100px',
-                        minWidth: '1000px',
+                        minWidth: minWidth,
                         backgroundColor: 'rebeccapurple',
                         padding: '10px'
                     }}>
                         <DetectChord/>
                         <PlayNotes/>
+                    </div>
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        //height: '20%',
+                        minHeight: '100px',
+                        minWidth: minWidth,
+                        backgroundColor: 'red',
+                        padding: '10px'
+                    }}>
+                        <DisplayNotes/>
                     </div>
                 </div>
 
