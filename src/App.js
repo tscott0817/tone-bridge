@@ -12,11 +12,10 @@ import DisplayNotes from "./components/DisplayNotes";
 
 /**
  * TODO Ideas:
- *   - Chord Identifier
+ *   * Chord Identifier
  *      - Can either select notes on fretboard in any tuning or input notes manually
  *      -
- *
- *   - Guitar fretboard
+ *   * Guitar fretboard
  *      - All strings can be changed to whatever notes the user wants (needs auto update for chord and scale shapes)
  *      -
  *

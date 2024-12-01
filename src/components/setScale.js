@@ -16,10 +16,6 @@ const SetScale = () => {
         setScaleType(event.target.value);
     };
 
-    const clearScale = () => {
-        clearSelectedNotes();
-    }
-
     const setScale = () => {
         const scaleNotes = Scale.get(`${keyNote} ${scaleType}`).notes;
 
@@ -31,8 +27,8 @@ const SetScale = () => {
 
         setScaleDegrees(scaleDegrees);
 
-        // Clear selected notes first
-        clearSelectedNotes();
+        // // Clear selected notes first
+        // clearSelectedNotes();
 
         const octaveNotes = scaleNotes.reduce((noteArray, note) => {
             for (let octave = 1; octave <= 7; octave++) {
@@ -50,13 +46,7 @@ const SetScale = () => {
             pendingNotes.forEach(note => selectNote(note));
             setPendingNotes([]); // Reset pending notes
         }
-    }, [pendingNotes]);
-
-
-    useEffect(() => {
-        // This is just so the guitar updates every time a new note is added outside of the component
-        // console.log('Selected Notes After Clearing: ', selectedNotes);
-    }, [selectedNotes]);
+    }, [pendingNotes, selectNote]);
 
     return (
         <div style={{
@@ -87,7 +77,6 @@ const SetScale = () => {
                 </select>
             </div>
             <button onClick={setScale}>Set Scale</button>
-            <button onClick={clearScale}>Clear</button>
         </div>
     );
 };
