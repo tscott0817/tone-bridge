@@ -1,11 +1,13 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNoteContext } from "../../stateManager/NoteContext";
 import { Note } from "tonal";
 import woodImage from '../../img/wood.png';
 
 const Neck = ({ openNotesProp }) => {
-    const { selectedNotes, selectNote, unselectNote, rootNote } = useNoteContext();
+    const { selectedNotes, selectNote, unselectNote, scaleDegrees, chordDegrees, clearSelectedNotes } = useNoteContext();
     const [openNotes, setOpenNotes] = useState(openNotesProp);
+
+
     useEffect(() => {
         setOpenNotes(openNotesProp);
     }, [openNotesProp]);
@@ -22,7 +24,7 @@ const Neck = ({ openNotesProp }) => {
     ], [openNotes]);
 
     const calculateNote = (fret, string) => {
-        const noteIndex = (fret) % stringNotes[string - 1].length;
+        const noteIndex = fret % stringNotes[string - 1].length;
         const noteName = stringNotes[string - 1][noteIndex];
         return `${noteName}`;
     };
@@ -36,21 +38,52 @@ const Neck = ({ openNotesProp }) => {
     };
 
     const setNoteColor = (note) => {
-        const rootString = rootNote.substring(0, rootNote.length); // Remove the octave number
-        const noteString = note.substring(0, note.length - 1); // Remove the octave number
+
+        // Get the note without the octave
+        const noteString = note.substring(0, note.length - 1);
+
+        let degreeColors = {};
+        let scaleDegree = null;
+
+        // If scaleDegrees are set, map the note to the scale degree
+        if (Object.keys(scaleDegrees).length > 0) {
+            degreeColors = {
+                root: 'red',     // 1st degree
+                second: 'orange', // 2nd degree
+                third: 'yellow', // 3rd degree
+                fourth: 'green', // 4th degree
+                fifth: 'blue',   // 5th degree
+                sixth: 'indigo', // 6th degree
+                seventh: 'violet', // 7th degree
+            };
+            scaleDegree = Object.keys(scaleDegrees).find(key => scaleDegrees[key] === noteString);
+        }
+
+        // // If chordDegrees are set, map the note to the chord degree
+        // if (Object.keys(chordDegrees).length > 0) {
+        //     degreeColors = {
+        //         root: 'red',     // 1st degree
+        //         third: 'yellow', // 3rd degree
+        //         fifth: 'blue',   // 5th degree
+        //         seventh: 'violet', // 7th degree
+        //         ninth: 'green',  // 9th degree
+        //         eleventh: 'purple', // 11th degree
+        //         thirteenth: 'indigo', // 13th degree
+        //     };
+        //     scaleDegree = Object.keys(chordDegrees).find(key => chordDegrees[key] === noteString);
+        // }
+
         const isSelected = selectedNotes.includes(note);
-        if (isSelected && rootString === noteString) {
-            return 'red'; // Highlight root note in red
+        console.log('Notes from Neck Component: ', selectedNotes);
+        if (isSelected && scaleDegree) {
+            return degreeColors[scaleDegree] || 'teal'; // Default to teal for unmatched degrees
         } else if (isSelected) {
-            return 'teal'; // Highlight other selected notes in teal
+            return 'teal'; // Default for selected notes not in the scale or chord
         } else {
-            return 'rgba(168, 193, 221, 0.8)'; // Default color for unselected notes
+            return 'rgba(168, 193, 221, 0.8)'; // Default for unselected notes
         }
     };
-
-    useEffect(() => {
-
-    }, [selectedNotes])
+    useEffect(() => {}, [selectedNotes, scaleDegrees, chordDegrees]);
 
     return (
         <div className="neck" style={{
@@ -82,7 +115,7 @@ const Neck = ({ openNotesProp }) => {
             </div>
             {[1, 2, 3, 4, 5, 6].map((stringIndex) => (
                 <div key={stringIndex}>
-                    {Array.from({length: numFrets}, (_, i) => i).map((fret, index) => {
+                    {Array.from({ length: numFrets }, (_, i) => i).map((fret, index) => {
                         const note = calculateNote(fret, stringIndex);
                         const leftPosition = `${(fret + 0.5) * (100 / numFrets)}%`;
                         const noteHeight = (stringIndex - 1) * (100 / 6) + 15 / 2;
@@ -146,4 +179,5 @@ const Neck = ({ openNotesProp }) => {
         </div>
     );
 };
+
 export default Neck;

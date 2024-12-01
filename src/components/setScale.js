@@ -3,9 +3,10 @@ import {useNoteContext} from "../stateManager/NoteContext"; // Import the NoteCo
 import {Scale, ScaleType} from 'tonal';
 
 const SetScale = () => {
-    const {selectedNotes, selectNote, unselectNote, setRootNote, rootNote} = useNoteContext(); // Use the NoteContext
+    const { selectedNotes, selectNote, unselectNote, setScaleDegrees, clearSelectedNotes } = useNoteContext();
     const [keyNote, setKeyNote] = useState("C");
     const [scaleType, setScaleType] = useState("major");
+    const [pendingNotes, setPendingNotes] = useState([]); // To enforce clearing and adding notes in sequence
 
     const handleKeyNoteChange = (event) => {
         setKeyNote(event.target.value);
@@ -15,25 +16,46 @@ const SetScale = () => {
         setScaleType(event.target.value);
     };
 
+    const clearScale = () => {
+        clearSelectedNotes();
+    }
+
     const setScale = () => {
-        const scaleNotes = Scale.get(`${keyNote} ${scaleType}`).notes.reduce((acc, note) => {
-            for (let octave = 1; octave <= 7; octave++) { // Assuming guitar ranges from octave 2 to 6
-                acc.push(`${note}${octave}`);
-            }
+        const scaleNotes = Scale.get(`${keyNote} ${scaleType}`).notes;
+
+        const scaleDegrees = scaleNotes.reduce((acc, note, index) => {
+            const degreeNames = ['root', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh'];
+            acc[degreeNames[index % degreeNames.length]] = note;
             return acc;
+        }, {});
+
+        setScaleDegrees(scaleDegrees);
+
+        // Clear selected notes first
+        clearSelectedNotes();
+
+        const octaveNotes = scaleNotes.reduce((noteArray, note) => {
+            for (let octave = 1; octave <= 7; octave++) {
+                noteArray.push(`${note}${octave}`);
+            }
+            return noteArray;
         }, []);
 
-        setRootNote(`${keyNote}`); // Set the root note (keynote
-
-        // Clear the existing selected notes
-        selectedNotes.forEach(note => unselectNote(note));
-
-        // Add the notes of the selected scale
-        scaleNotes.forEach(note => selectNote(note));
+        // Store new notes for addition in useEffect
+        setPendingNotes(octaveNotes);
     };
 
     useEffect(() => {
+        if (pendingNotes.length > 0) {
+            pendingNotes.forEach(note => selectNote(note));
+            setPendingNotes([]); // Reset pending notes
+        }
+    }, [pendingNotes]);
+
+
+    useEffect(() => {
         // This is just so the guitar updates every time a new note is added outside of the component
+        // console.log('Selected Notes After Clearing: ', selectedNotes);
     }, [selectedNotes]);
 
     return (
@@ -65,6 +87,7 @@ const SetScale = () => {
                 </select>
             </div>
             <button onClick={setScale}>Set Scale</button>
+            <button onClick={clearScale}>Clear</button>
         </div>
     );
 };

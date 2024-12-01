@@ -3,10 +3,9 @@ import {Chord} from "tonal";
 import {useNoteContext} from "../stateManager/NoteContext"; // Import the NoteContext
 
 const SetChord = () => {
-    const {selectedNotes, selectNote, unselectNote, setRootNote, rootNote} = useNoteContext(); // Use the NoteContext
+    const {selectedNotes, selectNote, unselectNote, setChordDegrees} = useNoteContext(); // Use the NoteContext
     const [root, setRoot] = useState("C");
     const [chordType, setChordType] = useState("maj");
-    const [chordName, setChordName] = useState("Cmaj");
 
     const handleRootChange = (event) => {
         setRoot(event.target.value);
@@ -16,21 +15,45 @@ const SetChord = () => {
         setChordType(event.target.value);
     };
 
+    const handleClear = () => {
+        selectedNotes.forEach((note) => unselectNote(note));
+    };
+
     const setChord = () => {
+        // Get the chord notes
         const chordNotes = Chord.get(`${root}${chordType}`).notes.flatMap(note => {
             const notes = [];
             for (let octave = 1; octave <= 7; octave++) {
-                notes.push(note + octave);
+                notes.push(note + octave);  // Add notes for multiple octaves
             }
             return notes;
         });
-        const chord = Chord.get(`${root}${chordType}`).name;
-        // setChordName(chord);
 
-        setRootNote(`${root}`); // Set the root note
+        console.log("Chord Notes:", chordNotes);
+
+        // Filter to get only the unique notes (e.g., C, E, G)
+        const uniqueNotes = [...new Set(chordNotes.map(note => note[0]))];  // Assuming note[0] is the pitch, like 'C', 'E', 'G'
+
+        // Define the chord degree names
+        const degreeNames = ['root', 'third', 'fifth', 'seventh', 'ninth', 'eleventh', 'thirteenth']; // TODO: This mapping only works for diatonic chords
+
+        // Map chord notes to chord degrees (1, 3, 5, 7, 9, 11, 13)
+        const chordDegrees = degreeNames.reduce((acc, degree, index) => {
+            // Only assign the degree if the corresponding note exists in uniqueNotes
+            if (uniqueNotes[index]) {
+                acc[degree] = uniqueNotes[index]; // Assign the note to the degree
+            }
+            return acc;
+        }, {});
+
+        // Update chord degrees globally
+        setChordDegrees(chordDegrees); // Set chord degrees in global state
+
+        // Log chord degrees for debugging
+        console.log("Chord Degrees:", chordDegrees);
 
         // Clear the existing selected notes
-        selectedNotes.forEach(note => unselectNote(note));
+        //selectedNotes.forEach(note => unselectNote(note));
 
         // Add all the notes of the selected chord to the selectedNotes array
         chordNotes.forEach(note => selectNote(note));
@@ -97,14 +120,6 @@ const SetChord = () => {
                     <option value="suspended fourth flat ninth">7b9sus4</option>
                 </select>
             </div>
-            {/*<div>*/}
-            {/*    <label htmlFor="chordType">Chord Type:</label>*/}
-            {/*    <select id="chordType" value={chordType} onChange={handleChordTypeChange}>*/}
-            {/*        <option value="major">Major</option>*/}
-            {/*        <option value="major seventh">Maj7</option>*/}
-            {/*        /!* Add other options *!/*/}
-            {/*    </select>*/}
-            {/*</div>*/}
             <button onClick={setChord}>Set Chord</button>
         </div>
     );

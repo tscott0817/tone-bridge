@@ -1,26 +1,54 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNoteContext } from "../../stateManager/NoteContext";
-import { Note } from "tonal";
+import { Note, Scale } from "tonal";
 
-const Headstock = ({openNotesProp}) => {
-    const { selectedNotes, selectNote, unselectNote, rootNote } = useNoteContext();
+const Headstock = ({ openNotesProp }) => {
+    const { selectedNotes, selectNote, unselectNote, scaleDegrees } = useNoteContext();
     const [openNotes, setOpenNotes] = useState(openNotesProp);
+
     useEffect(() => {
         setOpenNotes(openNotesProp);
     }, [openNotesProp]);
 
     // Define the strings and their corresponding MIDI note numbers
-    // TODO: Need to make strings changable
     const strings = [
-        { string: 1, midiNote: openNotes[5]}, // High E
-        { string: 2, midiNote: openNotes[4]}, // B
-        { string: 3, midiNote: openNotes[3]}, // G
-        { string: 4, midiNote: openNotes[2]}, // D
-        { string: 5, midiNote: openNotes[1]}, // A
-        { string: 6, midiNote: openNotes[0]}  // Low E
+        { string: 1, midiNote: openNotes[5] }, // High E
+        { string: 2, midiNote: openNotes[4] }, // B
+        { string: 3, midiNote: openNotes[3] }, // G
+        { string: 4, midiNote: openNotes[2] }, // D
+        { string: 5, midiNote: openNotes[1] }, // A
+        { string: 6, midiNote: openNotes[0] }, // Low E
     ];
 
-    // Function to handle string click
+    const setNoteColor = (note) => {
+        // Get the note without the octave
+        const noteString = note.substring(0, note.length - 1);
+
+        // Match the note to a scale degree
+        const scaleDegree = Object.keys(scaleDegrees).find(key => scaleDegrees[key] === noteString);
+
+        // Assign colors based on the scale degree
+        const degreeColors = {
+            root: 'red',
+            second: 'orange',
+            third: 'yellow',
+            fourth: 'green',
+            fifth: 'blue',
+            sixth: 'indigo',
+            seventh: 'violet',
+        };
+
+        const isSelected = selectedNotes.includes(note);
+
+        if (isSelected && scaleDegree) {
+            return degreeColors[scaleDegree] || 'teal'; // Default to teal for unmatched degrees
+        } else if (isSelected) {
+            return 'teal'; // Default for selected notes not in the scale
+        } else {
+            return 'rgba(168, 193, 221, 0.8)'; // Default for unselected notes
+        }
+    };
+
     const handleStringClick = (note) => {
         if (selectedNotes.includes(note)) {
             unselectNote(note);
@@ -29,29 +57,11 @@ const Headstock = ({openNotesProp}) => {
         }
     };
 
-    const setNoteColor = (note) => {
-        const rootString = rootNote.substring(0, rootNote.length); // Remove the octave number
-        const noteString = note.substring(0, note.length - 1); // Remove the octave number
-        const isSelected = selectedNotes.includes(note);
-        if (isSelected && rootString === noteString) {
-            return 'red'; // Highlight root note in red
-        } else if (isSelected) {
-            return 'teal'; // Highlight other selected notes in teal
-        } else {
-            return 'rgba(168, 193, 221, 0.8)'; // Default color for unselected notes
-        }
-    };
-
-    useEffect(() => {
-        // This is just to the guitar updates every time a new note is added outside of the guitar component
-    }, [selectedNotes]);
-
     return (
         <div className="headstock" style={{
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             position: 'relative',
             width: '100%',
-
         }}>
             {strings.map(({ string, midiNote }) => {
                 const note = Note.name(Note.fromMidi(midiNote));
@@ -96,3 +106,4 @@ const Headstock = ({openNotesProp}) => {
 };
 
 export default Headstock;
+

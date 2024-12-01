@@ -33,7 +33,15 @@ const Guitar = () => {
             // backgroundColor: 'pink',
         }}>
             {/* TODO: Might be better separate out from guitar */}
-            <div className="noteNamesContainer" style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', backgroundColor: 'blue', marginBottom: '10px', height: '200px', textAlign: 'center'}}>
+            <div className="noteNamesContainer" style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                backgroundColor: 'pink',
+                marginBottom: '10px',
+                height: '200px',
+                textAlign: 'center'
+            }}>
                 {noteNames.map((name, index) => (
                     <div key={index} style={{margin: '5px', display: 'inline-block'}}>
                         <button onClick={() => decrementNote(index)}>-</button>
@@ -49,6 +57,7 @@ const Guitar = () => {
                 height: '100%',
                 width: '100%',
                 backgroundColor: 'red',
+                marginBottom: '10px',
                 display: 'flex',
                 flexDirection: 'row',
             }}>

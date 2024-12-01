@@ -3,7 +3,7 @@ import * as Tone from 'tone';
 import { useNoteContext } from "../stateManager/NoteContext"; // Import the NoteContext
 
 const PlayNotes = () => {
-    const { selectedNotes, selectNote, unselectNote, setRootNote } = useNoteContext(); // Use the NoteContext
+    const { selectedNotes, selectNote, unselectNote} = useNoteContext(); // Use the NoteContext
 
     const handleNoteClick = (note, octave) => {
         const fullNote = note + octave;
@@ -16,7 +16,6 @@ const PlayNotes = () => {
 
     const handleClear = () => {
         selectedNotes.forEach((note) => unselectNote(note));
-        setRootNote(" ");
     };
 
     const playNotesSynth = () => {
