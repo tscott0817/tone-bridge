@@ -18,17 +18,29 @@ const SetScale = () => {
 
     const setScale = () => {
         const scaleNotes = Scale.get(`${keyNote} ${scaleType}`).notes;
+        console.log(scaleNotes);
 
         const scaleDegrees = scaleNotes.reduce((acc, note, index) => {
-            const degreeNames = ['root', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh'];
+            const degreeNames = [
+                'root',
+                'second',
+                'third',
+                'fourth',
+                'fifth',
+                'sixth',
+                'seventh',
+                'eighth',
+                'ninth',
+                'tenth',
+                'eleventh',
+                'twelfth'
+            ];
+
             acc[degreeNames[index % degreeNames.length]] = note;
             return acc;
         }, {});
 
         setScaleDegrees(scaleDegrees);
-
-        // // Clear selected notes first
-        // clearSelectedNotes();
 
         const octaveNotes = scaleNotes.reduce((noteArray, note) => {
             for (let octave = 1; octave <= 7; octave++) {
@@ -43,6 +55,7 @@ const SetScale = () => {
 
     useEffect(() => {
         if (pendingNotes.length > 0) {
+            //clearSelectedNotes();
             pendingNotes.forEach(note => selectNote(note));
             setPendingNotes([]); // Reset pending notes
         }

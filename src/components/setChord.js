@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Chord } from "tonal";
-import { useNoteContext } from "../stateManager/NoteContext"; // Import the NoteContext
+import { useNoteContext } from "../stateManager/NoteContext";
 
 const SetChord = () => {
     const {
@@ -53,16 +53,10 @@ const SetChord = () => {
         setChordNotes(notes);
     };
 
-    // useEffect for sequential updates
     useEffect(() => {
         if (chordNotes.length > 0) {
-            // Clear existing selected notes
-            clearSelectedNotes();
-
-            // Select new chord notes
+            //clearSelectedNotes();
             chordNotes.forEach((note) => selectNote(note));
-
-            // Reset chordNotes to avoid re-triggering
             setChordNotes([]);
         }
     }, [chordNotes, clearSelectedNotes, selectNote]);

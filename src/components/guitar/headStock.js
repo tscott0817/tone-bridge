@@ -29,13 +29,21 @@ const Headstock = ({ openNotesProp }) => {
 
         // Assign colors based on the scale degree
         const degreeColors = {
-            root: 'red',
+/*            root: 'red',
             second: 'orange',
             third: 'yellow',
             fourth: 'green',
             fifth: 'blue',
             sixth: 'indigo',
-            seventh: 'violet',
+            seventh: 'violet',*/
+
+            root: '#f29f99',     // 1st degree
+            second: 'teal', // 2nd degree
+            third: 'teal', // 3rd degree
+            fourth: 'teal', // 4th degree
+            fifth: 'teal',   // 5th degree
+            sixth: 'teal', // 6th degree
+            seventh: 'teal', // 7th degree
         };
 
         const isSelected = selectedNotes.includes(note);

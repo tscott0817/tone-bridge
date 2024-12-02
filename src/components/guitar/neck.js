@@ -3,9 +3,11 @@ import { useNoteContext } from "../../stateManager/NoteContext";
 import { Note } from "tonal";
 import woodImage from '../../img/wood.png';
 
+
+// TODO: Open Notes should probably not be a prop
 const Neck = ({ openNotesProp }) => {
     const { selectedNotes, selectNote, unselectNote, scaleDegrees, chordDegrees, clearSelectedNotes } = useNoteContext();
-    const [openNotes, setOpenNotes] = useState(openNotesProp);
+    const [openNotes, setOpenNotes] = useState(openNotesProp);  // Top of fretboard handle a bit differently
 
 
     useEffect(() => {
@@ -14,14 +16,38 @@ const Neck = ({ openNotesProp }) => {
 
     const numFrets = 12;
 
-    const stringNotes = useMemo(() => [
-        Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[5] + 1 + i))), // Need offset by 1 to get the correct note
-        Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[4] + 1 + i))),
-        Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[3] + 1 + i))),
-        Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[2] + 1 + i))),
-        Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[1] + 1 + i))),
-        Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[0] + 1 + i))),
-    ], [openNotes]);
+    const useSharps = useMemo(() =>
+            selectedNotes.some(note => note.includes('#')),
+        [selectedNotes]
+    );
+
+    const stringNotes = useMemo(() => {
+        //console.log(useSharps);
+        let notesArray = [];
+
+        if (useSharps) {
+            notesArray = [
+                Array.from({ length: 13 }, (_, i) => Note.enharmonic(Note.name(Note.fromMidi(openNotes[5] + 1 + i), { sharps: true }))),
+                Array.from({ length: 13 }, (_, i) => Note.enharmonic(Note.name(Note.fromMidi(openNotes[4] + 1 + i), { sharps: true }))),
+                Array.from({ length: 13 }, (_, i) => Note.enharmonic(Note.name(Note.fromMidi(openNotes[3] + 1 + i), { sharps: true }))),
+                Array.from({ length: 13 }, (_, i) => Note.enharmonic(Note.name(Note.fromMidi(openNotes[2] + 1 + i), { sharps: true }))),
+                Array.from({ length: 13 }, (_, i) => Note.enharmonic(Note.name(Note.fromMidi(openNotes[1] + 1 + i), { sharps: true }))),
+                Array.from({ length: 13 }, (_, i) => Note.enharmonic(Note.name(Note.fromMidi(openNotes[0] + 1 + i), { sharps: true }))),
+            ];
+        }
+        else {
+            notesArray = [
+                Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[5] + 1 + i))),
+                Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[4] + 1 + i))),
+                Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[3] + 1 + i))),
+                Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[2] + 1 + i))),
+                Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[1] + 1 + i))),
+                Array.from({ length: 13 }, (_, i) => Note.name(Note.fromMidi(openNotes[0] + 1 + i))),
+            ];
+        }
+
+        return notesArray;
+    }, [openNotes, selectedNotes]);
 
     const calculateNote = (fret, string) => {
         const noteIndex = fret % stringNotes[string - 1].length;
@@ -48,13 +74,21 @@ const Neck = ({ openNotesProp }) => {
         // If scaleDegrees are set, map the note to the scale degree
         if (Object.keys(scaleDegrees).length > 0) {
             degreeColors = {
-                root: 'red',     // 1st degree
+                /*root: 'red',     // 1st degree
                 second: 'orange', // 2nd degree
                 third: 'yellow', // 3rd degree
                 fourth: 'green', // 4th degree
                 fifth: 'blue',   // 5th degree
                 sixth: 'indigo', // 6th degree
-                seventh: 'violet', // 7th degree
+                seventh: 'violet', // 7th degree*/
+
+                root: '#f29f99',     // 1st degree
+                second: 'teal', // 2nd degree
+                third: 'teal', // 3rd degree
+                fourth: 'teal', // 4th degree
+                fifth: 'teal',   // 5th degree
+                sixth: 'teal', // 6th degree
+                seventh: 'teal', // 7th degree
             };
             scaleDegree = Object.keys(scaleDegrees).find(key => scaleDegrees[key] === noteString);
         }
@@ -74,13 +108,12 @@ const Neck = ({ openNotesProp }) => {
         }
 
         const isSelected = selectedNotes.includes(note);
-        console.log('Notes from Neck Component: ', selectedNotes);
         if (isSelected && scaleDegree) {
-            return degreeColors[scaleDegree] || 'teal'; // Default to teal for unmatched degrees
+            return degreeColors[scaleDegree] || '#e6d595';
         } else if (isSelected) {
-            return 'teal'; // Default for selected notes not in the scale or chord
+            return '#e6d595';
         } else {
-            return 'rgba(168, 193, 221, 0.8)'; // Default for unselected notes
+            return 'rgba(168, 193, 221, 0.8)';
         }
     };
     useEffect(() => {}, [selectedNotes, scaleDegrees, chordDegrees]);
