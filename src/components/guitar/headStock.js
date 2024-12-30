@@ -10,7 +10,6 @@ const Headstock = ({ openNotesProp }) => {
         setOpenNotes(openNotesProp);
     }, [openNotesProp]);
 
-    // Define the strings and their corresponding MIDI note numbers
     const strings = [
         { string: 1, midiNote: openNotes[5] }, // High E
         { string: 2, midiNote: openNotes[4] }, // B

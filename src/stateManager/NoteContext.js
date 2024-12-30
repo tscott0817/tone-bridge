@@ -9,18 +9,12 @@ const NoteReducer = (state, action) => {
         case 'SELECT_NOTE':
             return { ...state, selectedNotes: [...state.selectedNotes, action.payload] };
         case 'UNSELECT_NOTE':
-            return {
-                ...state,
-                selectedNotes: state.selectedNotes.filter(note => note !== action.payload),
-            };
+            return { ...state, selectedNotes: state.selectedNotes.filter(note => note !== action.payload)};
         case 'SET_SCALE_DEGREES':
-            // Clear selected notes when setting the scale degrees
             return { ...state, scaleDegrees: action.payload, chordDegrees: {}, selectedNotes: [] };
         case 'SET_CHORD_DEGREES':
-            // Clear selected notes when setting the chord degrees
             return { ...state, chordDegrees: action.payload, scaleDegrees: {}, selectedNotes: [] };
         case 'CLEAR_SELECTED_NOTES':
-            // Explicitly clear all selected notes
             return { ...state, selectedNotes: [] };
         default:
             return state;

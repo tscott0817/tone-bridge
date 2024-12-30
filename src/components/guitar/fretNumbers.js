@@ -1,7 +1,4 @@
 import React from 'react';
-import {useNoteContext} from "../../stateManager/NoteContext";
-import Neck from "./neck";
-import HeadStock from "./headStock";
 
 const FretNumbers = () => {
 

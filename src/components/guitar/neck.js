@@ -47,7 +47,7 @@ const Neck = ({ openNotesProp }) => {
         }
 
         return notesArray;
-    }, [openNotes, selectedNotes]);
+    }, [openNotes, useSharps]);
 
     const calculateNote = (fret, string) => {
         const noteIndex = fret % stringNotes[string - 1].length;
@@ -96,13 +96,21 @@ const Neck = ({ openNotesProp }) => {
         // // If chordDegrees are set, map the note to the chord degree
         if (Object.keys(chordDegrees).length > 0) {
             degreeColors = {
-                root: 'red',     // 1st degree
+/*                root: 'red',     // 1st degree
                 third: 'yellow', // 3rd degree
                 fifth: 'blue',   // 5th degree
                 seventh: 'violet', // 7th degree
                 ninth: 'green',  // 9th degree
                 eleventh: 'purple', // 11th degree
-                thirteenth: 'indigo', // 13th degree
+                thirteenth: 'indigo', // 13th degree*/
+
+                root: '#f29f99',     // 1st degree
+                third: 'teal', // 3rd degree
+                fifth: 'teal',   // 5th degree
+                seventh: 'teal', // 7th degree
+                ninth: 'teal',  // 9th degree
+                eleventh: 'teal', // 11th degree
+                thirteenth: 'teal', // 13th degree
             };
             scaleDegree = Object.keys(chordDegrees).find(key => chordDegrees[key] === noteString);
         }

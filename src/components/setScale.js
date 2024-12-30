@@ -18,7 +18,7 @@ const SetScale = () => {
 
     const setScale = () => {
         const scaleNotes = Scale.get(`${keyNote} ${scaleType}`).notes;
-        console.log(scaleNotes);
+        console.log('Scale Notes', scaleNotes);
 
         const scaleDegrees = scaleNotes.reduce((acc, note, index) => {
             const degreeNames = [
