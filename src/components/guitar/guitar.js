@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {useNoteContext} from "../stateManager/NoteContext";
+import {useNoteContext} from "../../stateManager/NoteContext";
 import { Note } from "tonal";
-import Neck from "./guitar/neck";
-import HeadStock from "./guitar/headStock";
-import FretNumbers from "./guitar/fretNumbers";
+import Neck from "./neck";
+import HeadStock from "./headStock";
+import FretNumbers from "./fretNumbers";
 
 const Guitar = () => {
     const initialNotes = [40, 45, 50, 55, 59, 64];

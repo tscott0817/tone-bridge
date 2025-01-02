@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
-import {useNoteContext} from "../stateManager/NoteContext"; // Import the NoteContext
-import {Scale, ScaleType} from 'tonal';
+import React, { useEffect, useState } from "react";
+import { useNoteContext } from "../../../stateManager/NoteContext"; // Import the NoteContext
+import { Scale, ScaleType } from 'tonal';
 
 const SetScale = () => {
     const { selectedNotes, selectNote, unselectNote, setScaleDegrees, clearSelectedNotes } = useNoteContext();
@@ -64,32 +64,34 @@ const SetScale = () => {
     return (
         <div style={{
             backgroundColor: 'palegoldenrod',
-            height: '100%',
+            minHeight: '150px',
             width: "100%",
+            // padding: '10px',
             overflow: 'auto',
             display: 'flex',
-            flexDirection: 'row',
+            borderRadius: '10px',
+            flexDirection: 'column',  // Stack elements vertically
             justifyContent: 'center',
-            alignItems: 'center',
+            alignItems: 'flex-start',  // Left align the children
             gap: '10px'
         }}>
-            <div>
+            <div style={{ width: '90%', marginLeft: '5%',  }}>
                 <label htmlFor="keyNote">Tonic: </label>
-                <select id="keyNote" value={keyNote} onChange={handleKeyNoteChange}>
+                <select id="keyNote" value={keyNote} onChange={handleKeyNoteChange} style={{ width: '100%' }}>
                     {["C", "Db", "C#", "D", "Eb", "D#", "E", "F", "Gb", "F#", "G", "Ab", "G#", "A", "Bb", "A#", "B"].map((note) => (
                         <option key={note} value={note}>{note}</option>
                     ))}
                 </select>
             </div>
-            <div>
+            <div style={{width: '90%', marginLeft: '5%',}}>
                 <label htmlFor="scaleType">Scale Type: </label>
-                <select id="scaleType" value={scaleType} onChange={handleScaleTypeChange}>
+                <select id="scaleType" value={scaleType} onChange={handleScaleTypeChange} style={{width: '100%'}}>
                     {ScaleType.names().map((name) => (
                         <option key={name} value={name}>{name}</option>
                     ))}
                 </select>
             </div>
-            <button onClick={setScale}>Set Scale</button>
+            <button onClick={setScale} style={{alignSelf: 'center' }}>Set Scale</button> {/* Left align the button */}
         </div>
     );
 };

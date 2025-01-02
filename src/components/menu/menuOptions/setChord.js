@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Chord } from "tonal";
-import { useNoteContext } from "../stateManager/NoteContext";
+import { useNoteContext } from "../../../stateManager/NoteContext";
 
 const SetChord = () => {
     const {
@@ -64,20 +64,21 @@ const SetChord = () => {
     return (
         <div
             style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "lightblue",
-                height: "100%",
+                backgroundColor: 'palegoldenrod',
+                minHeight: '150px',
                 width: "100%",
                 overflow: "auto",
+                display: "flex",
+                borderRadius: '10px',
+                flexDirection: "column",  // Stack elements vertically
+                justifyContent: "center",
+                alignItems: "flex-start",  // Left align the children
                 gap: "10px",
             }}
         >
-            <div>
+            <div style={{ width: '90%', marginLeft: '5%' }}>
                 <label htmlFor="root">Root: </label>
-                <select id="root" value={root} onChange={handleRootChange}>
+                <select id="root" value={root} onChange={handleRootChange} style={{ width: '100%' }}>
                     {["C", "Db", "C#", "D", "Eb", "D#", "E", "F", "Gb", "F#", "G", "Ab", "G#", "A", "Bb", "A#", "B"].map(
                         (note) => (
                             <option key={note} value={note}>
@@ -87,9 +88,9 @@ const SetChord = () => {
                     )}
                 </select>
             </div>
-            <div>
+            <div style={{ width: '90%', marginLeft: '5%' }}>
                 <label htmlFor="chordType">Chord Type: </label>
-                <select id="chordType" value={chordType} onChange={handleChordTypeChange}>
+                <select id="chordType" value={chordType} onChange={handleChordTypeChange} style={{ width: '100%' }}>
                     {[
                         "major",
                         "major seventh",
@@ -129,7 +130,7 @@ const SetChord = () => {
                     ))}
                 </select>
             </div>
-            <button onClick={setChord}>Set Chord</button>
+            <button onClick={setChord} style={{ alignSelf: 'center' }}>Set Chord</button> {/* Center the button */}
         </div>
     );
 };
