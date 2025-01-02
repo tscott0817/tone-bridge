@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useNoteContext } from "../../stateManager/NoteContext";
+import { useNoteContext } from "../../../stateManager/NoteContext";
 import { Note, Scale } from "tonal";
 
-const Headstock = ({ openNotesProp }) => {
+const Headstock = ({ openNotesProp, showOctave }) => {
     const { selectedNotes, selectNote, unselectNote, scaleDegrees } = useNoteContext();
     const [openNotes, setOpenNotes] = useState(openNotesProp);
 
@@ -20,22 +20,14 @@ const Headstock = ({ openNotesProp }) => {
     ];
 
     const setNoteColor = (note) => {
-        // Get the note without the octave
-        const noteString = note.substring(0, note.length - 1);
+        // Remove the octave number if showOctave is false
+        const noteString = showOctave ? note : note.substring(0, note.length - 1);
 
         // Match the note to a scale degree
         const scaleDegree = Object.keys(scaleDegrees).find(key => scaleDegrees[key] === noteString);
 
         // Assign colors based on the scale degree
         const degreeColors = {
-/*            root: 'red',
-            second: 'orange',
-            third: 'yellow',
-            fourth: 'green',
-            fifth: 'blue',
-            sixth: 'indigo',
-            seventh: 'violet',*/
-
             root: '#f29f99',     // 1st degree
             second: 'teal', // 2nd degree
             third: 'teal', // 3rd degree
@@ -72,6 +64,7 @@ const Headstock = ({ openNotesProp }) => {
         }}>
             {strings.map(({ string, midiNote }) => {
                 const note = Note.name(Note.fromMidi(midiNote));
+                const displayNote = showOctave ? note : note.substring(0, note.length - 1); // Adjust display based on showOctave
                 const stringStyle = {
                     width: '45px',
                     height: '45px',
@@ -102,7 +95,7 @@ const Headstock = ({ openNotesProp }) => {
                                     marginTop: '10px',
                                 }}
                             >
-                                {note}
+                                {displayNote} {/* Display the note based on showOctave */}
                             </div>
                         )}
                     </div>
@@ -113,4 +106,3 @@ const Headstock = ({ openNotesProp }) => {
 };
 
 export default Headstock;
-

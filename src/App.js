@@ -4,7 +4,7 @@ import PlayNotes from "./components/playNotes";
 import { NoteProvider } from "./stateManager/NoteContext";
 import Guitar from "./components/guitar/guitar";
 import DetectChord from "./components/detectChord";
-import DisplayNotes from "./components/DisplayNotes";
+import DisplayNotes from "./components/displayNotes";
 import {mainBGColor} from "./stateManager/lightMode";
 import {useState} from "react";
 import Menu from "./components/menu/menu";
@@ -113,18 +113,9 @@ function App() {
                         backgroundColor: 'red',
                         padding: '10px'
                     }}>
+                        <DisplayNotes/>
                         <DetectChord/>
                         <PlayNotes/>
-                    </div>
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        minHeight: '100px',
-                        minWidth: minWidth,
-                        backgroundColor: 'rebeccapurple',
-                        padding: '10px'
-                    }}>
-                        <DisplayNotes/>
                     </div>
                 </div>
             </NoteProvider>

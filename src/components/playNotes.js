@@ -4,7 +4,7 @@ import { useNoteContext } from "../stateManager/NoteContext";
 import { FaCirclePlay } from "react-icons/fa6";
 
 const PlayNotes = () => {
-    const { selectedNotes, selectNote, unselectNote} = useNoteContext();
+    const { selectedNotes, selectNote, unselectNote, setScaleDegrees, setChordDegrees } = useNoteContext();
 
     const handleNoteClick = (note, octave) => {
         const fullNote = note + octave;
@@ -17,6 +17,10 @@ const PlayNotes = () => {
 
     const handleClear = () => {
         selectedNotes.forEach((note) => unselectNote(note));
+
+        // Clear scale and chord degrees
+        setScaleDegrees({});
+        setChordDegrees({});
     };
 
     const playNotesSynth = () => {

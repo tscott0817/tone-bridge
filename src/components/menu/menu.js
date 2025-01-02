@@ -65,11 +65,11 @@ const Menu = () => {
                 <button
                     onClick={toggleMenu}
                     style={{
-                        backgroundColor: 'white',
+                        backgroundColor: 'rgba(0, 0, 0, 0.0)',
                         border: 'none',
                         borderRadius: '5px',
                         cursor: 'pointer',
-                        boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.3)',
+                        // boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.3)',
                         display: 'flex',
                         justifyContent: 'center',  // Centers horizontally
                         alignItems: 'center',      // Centers vertically

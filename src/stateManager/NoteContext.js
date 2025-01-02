@@ -14,8 +14,6 @@ const NoteReducer = (state, action) => {
             return { ...state, scaleDegrees: action.payload, chordDegrees: {}, selectedNotes: [] };
         case 'SET_CHORD_DEGREES':
             return { ...state, chordDegrees: action.payload, scaleDegrees: {}, selectedNotes: [] };
-        case 'CLEAR_SELECTED_NOTES':
-            return { ...state, selectedNotes: [] };
         default:
             return state;
     }
@@ -48,10 +46,6 @@ const NoteProvider = ({ children }) => {
         dispatch({ type: 'SET_CHORD_DEGREES', payload: degrees });
     };
 
-    const clearSelectedNotes = () => {
-        dispatch({ type: 'CLEAR_SELECTED_NOTES' });
-    };
-
     // Provide state and action methods to consumers
     return (
         <NoteContext.Provider
@@ -63,7 +57,6 @@ const NoteProvider = ({ children }) => {
                 unselectNote,
                 setScaleDegrees,
                 setChordDegrees,
-                clearSelectedNotes,
             }}
         >
             {children}
