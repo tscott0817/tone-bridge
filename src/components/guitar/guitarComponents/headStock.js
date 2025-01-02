@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNoteContext } from "../../../stateManager/NoteContext";
 import { Note, Scale } from "tonal";
+import {emptyNoteColor} from "../../../stateManager/lightMode";
 
 const Headstock = ({ openNotesProp, showOctave }) => {
     const { selectedNotes, selectNote, unselectNote, scaleDegrees } = useNoteContext();
@@ -44,7 +45,7 @@ const Headstock = ({ openNotesProp, showOctave }) => {
         } else if (isSelected) {
             return 'teal'; // Default for selected notes not in the scale
         } else {
-            return 'rgba(168, 193, 221, 0.8)'; // Default for unselected notes
+            return emptyNoteColor; // Default for unselected notes
         }
     };
 

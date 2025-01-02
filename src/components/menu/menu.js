@@ -67,7 +67,7 @@ const Menu = () => {
                     style={{
                         backgroundColor: 'rgba(0, 0, 0, 0.0)',
                         border: 'none',
-                        borderRadius: '5px',
+                        // borderRadius: '5px',
                         cursor: 'pointer',
                         // boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.3)',
                         display: 'flex',

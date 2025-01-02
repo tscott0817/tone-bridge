@@ -5,6 +5,8 @@ import HeadStock from "./guitarComponents/headStock";
 import FretNumbers from "./guitarComponents/fretNumbers";
 import { FaPlus } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa6";
+import {buttonCompressed, mainBGColor, guitarBGColor, noColor} from "../../stateManager/lightMode";
+
 
 const Guitar = () => {
     const initialNotes = [40, 45, 50, 55, 59, 64];
@@ -12,7 +14,15 @@ const Guitar = () => {
     const [showOctave, setShowOctave] = useState(false); // State for toggling octave display
 
     // Convert MIDI numbers to note names
-    const noteNames = openNotes.map(note => Note.fromMidi(note));
+    // const noteNames = openNotes.map(note => Note.fromMidi(note));
+    const noteNames = openNotes.map(note => {
+        const noteName = Note.fromMidi(note);
+        if (showOctave) {
+            return noteName;  // Show the full note with the octave number
+        } else {
+            return noteName.replace(/[0-9]/g, '');  // Remove the octave number if showOctave is false
+        }
+    });
 
     const incrementNote = (index) => {
         setOpenNotes(openNotes.map((note, i) => i === index ? note + 1 : note));
@@ -40,36 +50,105 @@ const Guitar = () => {
             {/* Note selection and toggle */}
             <div className="noteNamesContainer" style={{
                 display: 'flex',
-                flexDirection: 'row',
+                flexDirection: 'row',  // Keep everything in a row
                 justifyContent: 'center',
-                backgroundColor: 'pink',
+                backgroundColor: mainBGColor,
                 marginBottom: '10px',
                 height: '200px',
-                textAlign: 'center'
+                textAlign: 'center',
+                alignItems: 'center',  // Vertically align items
+                flexWrap: 'wrap',  // Allow wrapping if necessary
+                width: '100%',  // Ensure the container takes full width
             }}>
-                {noteNames.map((name, index) => (
-                    <div key={index} style={{margin: '5px', display: 'inline-block'}}>
-                        <button onClick={() => decrementNote(index)}><FaMinus /></button>
-                        {name}
-                        <button onClick={() => incrementNote(index)}><FaPlus /></button>
-                    </div>
-                ))}
-                <div style={{marginTop: '5px'}}>
-                    <button onClick={resetNotes}>Reset</button>
+                {/* Note Buttons */}
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',  // Allow wrapping for notes
+                    justifyContent: 'center',  // Keep note buttons centered
+                    backgroundColor: noColor,
+                }}>
+                    {noteNames.map((name, index) => (
+                        <div key={index} style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            // margin: '5px',  // Optional: adds spacing between note buttons
+                        }}>
+                            <button
+                                onClick={() => decrementNote(index)}
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    padding: '5px',
+                                    fontSize: '16px',
+                                    border: 'none',
+                                    backgroundColor: 'rgba(0, 0, 0, 0.0)',
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                <FaMinus/>
+                            </button>
+                            {name}
+                            <button
+                                onClick={() => incrementNote(index)}
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    padding: '5px',
+                                    fontSize: '16px',
+                                    border: 'none',
+                                    backgroundColor: 'rgba(0, 0, 0, 0.0)',
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                <FaPlus/>
+                            </button>
+                        </div>
+                    ))}
                 </div>
-                {/* Toggle for octave numbers */}
-                <div style={{marginTop: '5px'}}>
-                    <button onClick={toggleOctaves}>
-                        {showOctave ? 'Hide Octave Numbers' : 'Show Octave Numbers'}
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '100%',
+                    position: 'fixed',
+                    left: 10,
+                    // marginLeft: '10px',
+                }}>
+                    <button onClick={toggleOctaves}
+                            style={{
+                                backgroundColor: showOctave ? buttonCompressed : noColor,
+                                border: 'none',
+                                borderRadius: '5px',
+                                cursor: 'pointer',
+                                width: '30px',
+                                height: '30px',
+                            }}>
+                        {showOctave ? '8' : '8'}<sup>va</sup>
+                    </button>
+                    <button onClick={resetNotes} style={{
+                        marginLeft: '10px',
+                        // backgroundColor: showOctave ? buttonCompressed : noColor,
+                        backgroundColor: noColor,
+                        border: 'none',
+                        borderRadius: '5px',
+                        cursor: 'pointer',
+                        width: '80px',
+                        height: '30px',
+                    }}>
+                        Reset Open
                     </button>
                 </div>
             </div>
+
 
             {/* Guitar neck and headstock */}
             <div className="guitarContainer" style={{
                 height: '100%',
                 width: '100%',
-                backgroundColor: 'red',
+                backgroundColor: guitarBGColor,
                 marginBottom: '10px',
                 display: 'flex',
                 flexDirection: 'row',
@@ -97,7 +176,7 @@ const Guitar = () => {
             <div className="fretNumbersContainer" style={{
                 height: '100%',
                 width: '100%',
-                backgroundColor: 'orange',
+                backgroundColor: mainBGColor,
                 display: 'flex',
                 flexDirection: 'row',
             }}>

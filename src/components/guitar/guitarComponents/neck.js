@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import { useNoteContext } from "../../../stateManager/NoteContext";
 import { Note } from "tonal";
 import woodImage from '../../../img/wood.png';
+import {emptyNoteColor, fretColor, neckColor, stringColor} from "../../../stateManager/lightMode";
 
 const Neck = ({ openNotesProp, showOctave }) => {
     const { selectedNotes, selectNote, unselectNote, scaleDegrees, chordDegrees } = useNoteContext();
@@ -94,13 +95,13 @@ const Neck = ({ openNotesProp, showOctave }) => {
         } else if (isSelected) {
             return 'teal';
         } else {
-            return 'rgba(168, 193, 221, 0.8)';
+            return emptyNoteColor;
         }
     };
 
     return (
         <div className="neck" style={{
-            backgroundColor: '#a36233',
+            backgroundColor: neckColor,
             position: 'relative',
             flex: 1,
             display: 'flex',
@@ -121,7 +122,7 @@ const Neck = ({ openNotesProp, showOctave }) => {
                         className="fret"
                         style={{
                             width: '10px',
-                            backgroundColor: 'black',
+                            backgroundColor: fretColor,
                         }}
                     ></div>
                 ))}
@@ -180,7 +181,7 @@ const Neck = ({ openNotesProp, showOctave }) => {
                     <div
                         className="string-horizontal"
                         style={{
-                            backgroundColor: ` #ffffff`,
+                            backgroundColor: stringColor,
                             marginTop: '22.5px',
                             height: '5px',
                             width: '105.3%',

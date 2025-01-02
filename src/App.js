@@ -99,7 +99,7 @@ function App() {
                         height: '400px',
                         minHeight: '425px',
                         minWidth: minWidth,
-                        backgroundColor: 'teal',
+                        backgroundColor: mainBGColor,
                         padding: '10px',
                         overflow: 'hidden'
                     }}>
