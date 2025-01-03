@@ -5,7 +5,7 @@ import { NoteProvider } from "./stateManager/NoteContext";
 import Guitar from "./components/guitar/guitar";
 import DetectChord from "./components/detectChord";
 import DisplayNotes from "./components/displayNotes";
-import {mainBGColor} from "./stateManager/lightMode";
+import {guitarContainerColor, mainBGColor, noColor} from "./stateManager/lightMode";
 import {useState} from "react";
 import Menu from "./components/menu/menu";
 
@@ -54,15 +54,14 @@ function App() {
                     <div style={{
                         minHeight: '50px',
                         minWidth: minWidth,
-                        backgroundColor: '#f7f7f7',
-                        // height: '20px',
-                        // padding: '10px',
+                        // backgroundColor: 'red',
                         paddingRight: '10px',
                         overflow: 'hidden',
                         display: 'flex',
                         flexDirection: 'row',
                         alignItems: 'center',
-                        justifyContent: 'flex-end' // Aligns the flex container to the right
+                        justifyContent: 'flex-end', // Aligns the flex container to the right
+                        boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)'
                     }}>
                         {/* Flex container for "About", "Profile", and Menu */}
                         <div style={{
@@ -99,9 +98,9 @@ function App() {
                         height: '400px',
                         minHeight: '425px',
                         minWidth: minWidth,
-                        backgroundColor: mainBGColor,
+                        backgroundColor: guitarContainerColor,
                         padding: '10px',
-                        overflow: 'hidden'
+                        overflow: 'hidden',
                     }}>
                         {instruments[currentInstrument]}
                     </div>

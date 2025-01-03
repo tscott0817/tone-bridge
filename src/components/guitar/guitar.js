@@ -5,7 +5,13 @@ import HeadStock from "./guitarComponents/headStock";
 import FretNumbers from "./guitarComponents/fretNumbers";
 import { FaPlus } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa6";
-import {buttonCompressed, mainBGColor, guitarBGColor, noColor} from "../../stateManager/lightMode";
+import {
+    buttonCompressed,
+    noColor,
+    fretNumberContainerColor,
+    guitarBGColor,
+    openNotesContainerColor
+} from "../../stateManager/lightMode";
 
 
 const Guitar = () => {
@@ -52,9 +58,11 @@ const Guitar = () => {
                 display: 'flex',
                 flexDirection: 'row',  // Keep everything in a row
                 justifyContent: 'center',
-                backgroundColor: mainBGColor,
-                marginBottom: '10px',
-                height: '200px',
+                backgroundColor: openNotesContainerColor,
+                // backgroundColor: 'red',
+                // marginBottom: '10px',
+                height: '40px',
+                marginBottom: '8px',
                 textAlign: 'center',
                 alignItems: 'center',  // Vertically align items
                 flexWrap: 'wrap',  // Allow wrapping if necessary
@@ -123,8 +131,9 @@ const Guitar = () => {
                                 border: 'none',
                                 borderRadius: '5px',
                                 cursor: 'pointer',
-                                width: '30px',
+                                width: '35px',
                                 height: '30px',
+                                fontSize: '18px',
                             }}>
                         {showOctave ? '8' : '8'}<sup>va</sup>
                     </button>
@@ -135,8 +144,9 @@ const Guitar = () => {
                         border: 'none',
                         borderRadius: '5px',
                         cursor: 'pointer',
-                        width: '80px',
+                        width: '110px',
                         height: '30px',
+                        fontSize: '18px',
                     }}>
                         Reset Open
                     </button>
@@ -149,7 +159,7 @@ const Guitar = () => {
                 height: '100%',
                 width: '100%',
                 backgroundColor: guitarBGColor,
-                marginBottom: '10px',
+                //marginBottom: '10px',
                 display: 'flex',
                 flexDirection: 'row',
             }}>
@@ -174,9 +184,9 @@ const Guitar = () => {
 
             {/* Fret numbers */}
             <div className="fretNumbersContainer" style={{
-                height: '100%',
+                height: '10%',
                 width: '100%',
-                backgroundColor: mainBGColor,
+                backgroundColor: fretNumberContainerColor,
                 display: 'flex',
                 flexDirection: 'row',
             }}>

@@ -2,6 +2,7 @@ import React from 'react';
 
 const FretNumbers = () => {
 
+    const fretNumSize = '20px';
     return (
         <div style={{
             height: '100%',
@@ -13,7 +14,7 @@ const FretNumbers = () => {
             {/* Move 0 away from far left */}
             <div style={{
                 width: '5%',
-                fontSize: '25px',
+                fontSize: fretNumSize,
                 display: 'flex',
                 justifyContent: 'center', // Centers horizontally
                 alignItems: 'center',     // Centers vertically
@@ -24,16 +25,16 @@ const FretNumbers = () => {
             <div style={{
                 display: 'flex',
                 flex: '1',
-                justifyContent: 'center',  // Centers horizontally
-                alignItems: 'center',      // Centers vertically
+                //justifyContent: 'center',  // Centers horizontally
+                // alignItems: 'center',      // Centers vertically
             }}>
                 {[...Array(12)].map((_, index) => (
                     <div key={index} style={{
                         flex: '1',
-                        fontSize: '25px',
+                        fontSize: fretNumSize,
                         display: 'flex',
                         justifyContent: 'center',  // Centers horizontally
-                        alignItems: 'center',      // Centers vertically
+                        alignItems: 'top',      // Centers vertically
                     }}>
                         {index + 1}
                     </div>
