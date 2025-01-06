@@ -1,0 +1,13 @@
+export const mainBGColor = 'black';
+export const buttonCompressed = '#c7c7c7'
+export const noColor = 'rgba(0, 0, 0, 0.0)'
+export const headerBGColor = '#f4f3f2';
+export const guitarContainerColor = 'red';
+export const guitarBGColor = '#787878';
+export const neckColor = '#a36233';
+export const fretColor = 'black';
+export const stringColor = '#ffffff';
+export const emptyNoteColor = 'rgba(168, 193, 221, 0.8)'
+export const fretNumberContainerColor = 'rgba(0, 0, 0, 0.0)';
+export const tempColor = 'black'
+export const openNotesContainerColor = 'rgba(0, 0, 0, 0.0)';

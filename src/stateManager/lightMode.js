@@ -9,4 +9,5 @@ export const fretColor = 'black';
 export const stringColor = '#ffffff';
 export const emptyNoteColor = 'rgba(168, 193, 221, 0.8)'
 export const fretNumberContainerColor = 'rgba(0, 0, 0, 0.0)';
+export const tempColor = 'black'
 export const openNotesContainerColor = 'rgba(0, 0, 0, 0.0)';
