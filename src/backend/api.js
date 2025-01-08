@@ -38,7 +38,7 @@ export const logoutUser = async () => {
 // CRUD Operations for Scales and Chords (with user association)
 export const createScaleOrChord = async (userId, name, type, data) => {
     const { data: result, error } = await supabase
-        .from('scales_and_chords')
+        .from('user_saved_data')
         .insert([{ user_id: userId, name, type, data }]); // Store with user ID
     if (error) throw new Error(error.message);
     return result;
@@ -46,7 +46,7 @@ export const createScaleOrChord = async (userId, name, type, data) => {
 
 export const getScalesAndChords = async (userId) => {
     const { data, error } = await supabase
-        .from('scales_and_chords')
+        .from('user_saved_data')
         .select('*')
         .eq('user_id', userId) // Only fetch for the logged-in user
         .order('created_at', { ascending: false });
@@ -56,7 +56,7 @@ export const getScalesAndChords = async (userId) => {
 
 export const updateScaleOrChord = async (id, updates) => {
     const { data, error } = await supabase
-        .from('scales_and_chords')
+        .from('user_saved_data')
         .update(updates)
         .eq('id', id);
     if (error) throw new Error(error.message);
@@ -65,7 +65,7 @@ export const updateScaleOrChord = async (id, updates) => {
 
 export const deleteScaleOrChord = async (id) => {
     const { data, error } = await supabase
-        .from('scales_and_chords')
+        .from('user_saved_data')
         .delete()
         .eq('id', id);
     if (error) throw new Error(error.message);

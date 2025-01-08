@@ -12,6 +12,7 @@ import {
     guitarBGColor,
     openNotesContainerColor
 } from "../../stateManager/lightMode";
+import { RiResetLeftLine } from "react-icons/ri";
 
 
 const Guitar = () => {
@@ -19,8 +20,6 @@ const Guitar = () => {
     const [openNotes, setOpenNotes] = useState(initialNotes);
     const [showOctave, setShowOctave] = useState(false); // State for toggling octave display
 
-    // Convert MIDI numbers to note names
-    // const noteNames = openNotes.map(note => Note.fromMidi(note));
     const noteNames = openNotes.map(note => {
         const noteName = Note.fromMidi(note);
         if (showOctave) {
@@ -74,7 +73,9 @@ const Guitar = () => {
                     alignItems: 'center',
                     flexWrap: 'wrap',  // Allow wrapping for notes
                     justifyContent: 'center',  // Keep note buttons centered
-                    backgroundColor: noColor,
+                    // backgroundColor: noColor,
+                    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                    borderRadius: '5px',
                 }}>
                     {noteNames.map((name, index) => (
                         <div key={index} style={{
@@ -116,6 +117,22 @@ const Guitar = () => {
                         </div>
                     ))}
                 </div>
+                <div>
+                    <button onClick={resetNotes} style={{
+                        backgroundColor: noColor,
+                        border: 'none',
+                        borderRadius: '5px',
+                        cursor: 'pointer',
+                        fontSize: '18px',
+                        display: 'flex', // Use flexbox
+                        justifyContent: 'center', // Center content horizontally
+                        alignItems: 'center', // Center content vertically
+                        width: '30px', // Optional: Set width for a square button
+                        height: '30px', // Optional: Set height for a square button
+                    }}>
+                        <RiResetLeftLine style={{ fontSize: '25px' }} />
+                    </button>
+                </div>
                 <div style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -133,23 +150,23 @@ const Guitar = () => {
                                 cursor: 'pointer',
                                 width: '35px',
                                 height: '30px',
-                                fontSize: '18px',
+                                fontSize: '20px',
                             }}>
                         {showOctave ? '8' : '8'}<sup>va</sup>
                     </button>
-                    <button onClick={resetNotes} style={{
-                        marginLeft: '10px',
-                        // backgroundColor: showOctave ? buttonCompressed : noColor,
-                        backgroundColor: noColor,
-                        border: 'none',
-                        borderRadius: '5px',
-                        cursor: 'pointer',
-                        width: '110px',
-                        height: '30px',
-                        fontSize: '18px',
-                    }}>
-                        Reset Open
-                    </button>
+                    {/*<button onClick={resetNotes} style={{*/}
+                    {/*    marginLeft: '10px',*/}
+                    {/*    // backgroundColor: showOctave ? buttonCompressed : noColor,*/}
+                    {/*    backgroundColor: noColor,*/}
+                    {/*    border: 'none',*/}
+                    {/*    borderRadius: '5px',*/}
+                    {/*    cursor: 'pointer',*/}
+                    {/*    width: '110px',*/}
+                    {/*    height: '30px',*/}
+                    {/*    fontSize: '18px',*/}
+                    {/*}}>*/}
+                    {/*    Reset Open*/}
+                    {/*</button>*/}
                 </div>
             </div>
 

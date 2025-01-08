@@ -13,7 +13,7 @@ import * as lightColors from "./stateManager/lightMode";
 import * as darkColors from "./stateManager/darkMode";
 import {FaSun, FaMoon} from "react-icons/fa";
 import Auth from "./backend/auth";
-import ScaleList from './scaleList';
+import SaveData from "./saveData";
 import {supabase} from "./backend/client";
 import {logoutUser} from "./backend/api";
 import {Scale} from "tonal"; // Import ScaleList
@@ -98,17 +98,6 @@ function ThemedApp() {
                     flexDirection: 'column',
                     overflow: 'auto'
                 }}>
-                    <div style={{cursor: 'pointer', marginRight: '4px'}}>
-                        {theme === lightColors ? (
-                            <FaMoon onClick={toggleTheme} style={{
-                                color: lightColors.tempColor,
-                                fontSize: '22px',
-                                transform: 'scaleX(-1)'
-                            }}/>
-                        ) : (
-                            <FaSun onClick={toggleTheme} style={{color: darkColors.tempColor, fontSize: '24px'}}/>
-                        )}
-                    </div>
                     <div style={{
                         minHeight: '50px',
                         minWidth: minWidth,
@@ -126,11 +115,29 @@ function ThemedApp() {
                             display: 'flex',
                             flexDirection: 'row',
                             alignItems: 'center',
+                            //backgroundColor: 'red',
                             gap: '20px', // Adds spacing between items
                         }}>
                             <span style={{color: 'black', cursor: 'pointer'}}>About</span>
                             <span style={{color: 'black', cursor: 'pointer'}}>Profile</span>
                             <Menu/>
+                            <div style={{
+                                cursor: 'pointer',
+                                marginRight: '10px',
+                                paddingTop: '3px',
+                                //backgroundColor: 'blue'
+                            }}>
+                                {theme === lightColors ? (
+                                    <FaMoon onClick={toggleTheme} style={{
+                                        color: lightColors.tempColor,
+                                        fontSize: '25px',
+                                        transform: 'scaleX(-1)'
+                                    }}/>
+                                ) : (
+                                    <FaSun onClick={toggleTheme}
+                                           style={{color: darkColors.tempColor, fontSize: '24px'}}/>
+                                )}
+                            </div>
                         </div>
                     </div>
                     {/*<div>
@@ -152,16 +159,16 @@ function ThemedApp() {
                             </button>
                         ))}
                     </div>*/}
-                    {/*<div style={{*/}
-                    {/*    height: '400px',*/}
-                    {/*    minHeight: '425px',*/}
-                    {/*    minWidth: minWidth,*/}
-                    {/*    backgroundColor: guitarContainerColor,*/}
-                    {/*    padding: '10px',*/}
-                    {/*    overflow: 'hidden',*/}
-                    {/*}}>*/}
-                    {/*    {instruments[currentInstrument]}*/}
-                    {/*</div>*/}
+                    <div style={{
+                        height: '400px',
+                        minHeight: '425px',
+                        minWidth: minWidth,
+                        backgroundColor: guitarContainerColor,
+                        padding: '10px',
+                        overflow: 'hidden',
+                    }}>
+                        {instruments[currentInstrument]}
+                    </div>
                     <div style={{
                         display: 'flex',
                         flexDirection: 'row',
@@ -182,7 +189,7 @@ function ThemedApp() {
                                 <h1>Welcome, {user.email}!</h1>
                                 <button onClick={handleLogout}>Logout</button>
 
-                                <ScaleList user={user} />
+                                <SaveData user={user} />
                             </div>
                         ) : (
                             // Render Auth component when no user is logged in
