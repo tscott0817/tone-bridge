@@ -15,9 +15,9 @@ import {
 import { RiResetLeftLine } from "react-icons/ri";
 
 
-const Guitar = () => {
-    const initialNotes = [40, 45, 50, 55, 59, 64];
-    const [openNotes, setOpenNotes] = useState(initialNotes);
+const Guitar = ({openNotes, setOpenNotes, initialNotes}) => {
+    // const initialNotes = [40, 45, 50, 55, 59, 64];
+    // const [openNotes, setOpenNotes] = useState(initialNotes);
     const [showOctave, setShowOctave] = useState(false); // State for toggling octave display
 
     const noteNames = openNotes.map(note => {

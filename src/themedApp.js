@@ -21,13 +21,8 @@ import {Scale} from "tonal"; // Import ScaleList
 
 /**
  *
- *  TODO Ideas:
- *    * Chord Identifier
- *       - Can either select notes on fretboard in any tuning or input notes manually
- *       -
- *    * Guitar fretboard
- *       - All strings can be changed to whatever notes the user wants (needs auto update for chord and scale shapes)
- *       -
+ *  TODO:
+ *    * Make user, setUser, and openNotes into a global context (currently prop drilling)
  *    * About Page
  *       - Basic theory
  *       - Description of how to use the app and it's purpose
@@ -40,20 +35,24 @@ const Piano = () => <div style={{ color: 'white' }}>Piano Component</div>;
 function ThemedApp() {
     const minWidth = '1000px';
     const { theme, toggleTheme } = useThemeContext();
-    const backgroundColor = theme === lightColors ? lightColors.mainBGColor : darkColors.mainBGColor;
-
-    // State to track the selected instrument
+    const [user, setUser] = useState(null);
     const [currentInstrument, setCurrentInstrument] = useState('Guitar');
+    const initialNotes = [40, 45, 50, 55, 59, 64];
+    const [openNotes, setOpenNotes] = useState(initialNotes);
 
-    // Map of instruments to their components
-    const instruments = {
-        Guitar: <Guitar />,
-        Piano: <Piano />,
+    // const instruments = {
+    //     Guitar: <Guitar openNotes={openNotes} setOpenNotes={setOpenNotes} initialNotes={initialNotes}/>,
+    //     Piano: <Piano />,
+    // };
+
+    const handleLogout = async () => {
+        try {
+            await logoutUser();
+            setUser(null);
+        } catch (error) {
+            console.error('Error logging out:', error);
+        }
     };
-
-    const [user, setUser] = useState(null); // Track user state
-    console.log("Current User:", user); // Check the current user state
-    const [key, setKey] = useState(0); // Add a key to force re-render
 
     useEffect(() => {
         const checkUser = async () => {
@@ -62,34 +61,22 @@ function ThemedApp() {
         };
         checkUser();
 
-        // Handle logout when the page is closed or refreshed
         const handleBeforeUnload = async (event) => {
             if (user) {
                 await handleLogout();
             }
         };
 
-        // Add event listener for beforeunload
         window.addEventListener('beforeunload', handleBeforeUnload);
 
-        // Cleanup event listener on component unmount
         return () => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
-    }, [user]); // Dependency on user to track changes
-
-    const handleLogout = async () => {
-        try {
-            await logoutUser(); // Use the logoutUser function from your API
-            setUser(null); // Clear user state
-        } catch (error) {
-            console.error('Error logging out:', error);
-        }
-    };
+    }, [user]);
 
     return (
         <div className="themedApp">
-            <NoteProvider>
+            <NoteProvider> {/* All components within this can access global state of */}
                 <div style={{
                     width: '100vw',
                     height: '100vh',
@@ -110,13 +97,12 @@ function ThemedApp() {
                         justifyContent: 'flex-end', // Aligns the flex container to the right
                         boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)'
                     }}>
-                        {/* Flex container for "About", "Profile", and Menu */}
                         <div style={{
                             display: 'flex',
                             flexDirection: 'row',
                             alignItems: 'center',
                             //backgroundColor: 'red',
-                            gap: '20px', // Adds spacing between items
+                            gap: '20px',
                         }}>
                             <span style={{color: 'black', cursor: 'pointer'}}>About</span>
                             <span style={{color: 'black', cursor: 'pointer'}}>Profile</span>
@@ -140,6 +126,7 @@ function ThemedApp() {
                             </div>
                         </div>
                     </div>
+                    {/* TODO: This is for swapping between instruments. Not added currently */}
                     {/*<div>
                         {Object.keys(instruments).map((instrument) => (
                             <button
@@ -167,7 +154,8 @@ function ThemedApp() {
                         padding: '10px',
                         overflow: 'hidden',
                     }}>
-                        {instruments[currentInstrument]}
+                        <Guitar openNotes={openNotes} setOpenNotes={setOpenNotes} initialNotes={initialNotes}/>
+                        {/*{instruments[currentInstrument]}*/}
                     </div>
                     <div style={{
                         display: 'flex',
@@ -183,16 +171,14 @@ function ThemedApp() {
                     </div>
 
                     <div style={{display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
-                        {/* Render the logout button when user is logged in */}
                         {user ? (
                             <div>
                                 <h1>Welcome, {user.email}!</h1>
                                 <button onClick={handleLogout}>Logout</button>
 
-                                <SaveData user={user} />
+                                <SaveData user={user} openNotes={openNotes} />
                             </div>
                         ) : (
-                            // Render Auth component when no user is logged in
                             <Auth user={user} setUser={setUser}/>
                         )}
                     </div>
