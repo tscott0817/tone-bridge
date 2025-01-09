@@ -37,8 +37,6 @@ function ThemedApp() {
     const { theme, toggleTheme } = useThemeContext();
     const [user, setUser] = useState(null);
     const [currentInstrument, setCurrentInstrument] = useState('Guitar');
-    const initialNotes = [40, 45, 50, 55, 59, 64];
-    const [openNotes, setOpenNotes] = useState(initialNotes);
 
     // const instruments = {
     //     Guitar: <Guitar openNotes={openNotes} setOpenNotes={setOpenNotes} initialNotes={initialNotes}/>,
@@ -76,7 +74,6 @@ function ThemedApp() {
 
     return (
         <div className="themedApp">
-            <NoteProvider> {/* All components within this can access global state of */}
                 <div style={{
                     width: '100vw',
                     height: '100vh',
@@ -88,7 +85,7 @@ function ThemedApp() {
                     <div style={{
                         minHeight: '50px',
                         minWidth: minWidth,
-                        // backgroundColor: 'red',
+                        backgroundColor: theme === lightColors ? lightColors.headerBGColor : darkColors.headerBGColor,
                         paddingRight: '10px',
                         overflow: 'hidden',
                         display: 'flex',
@@ -147,14 +144,18 @@ function ThemedApp() {
                         ))}
                     </div>*/}
                     <div style={{
-                        height: '400px',
-                        minHeight: '425px',
+                        height: '450px',
+                        minHeight: '450px',
                         minWidth: minWidth,
-                        backgroundColor: guitarContainerColor,
+                        backgroundColor: theme === lightColors ? lightColors.guitarContainerColor : darkColors.guitarContainerColor,
                         padding: '10px',
                         overflow: 'hidden',
+                        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.3)',
+                        //boxShadow: '0px 10px 15px -3px rgba(0, 0, 0, 0.3)',
+                        marginBottom: '25px',
+                        marginTop: '25px',
                     }}>
-                        <Guitar openNotes={openNotes} setOpenNotes={setOpenNotes} initialNotes={initialNotes}/>
+                        <Guitar />
                         {/*{instruments[currentInstrument]}*/}
                     </div>
                     <div style={{
@@ -162,29 +163,29 @@ function ThemedApp() {
                         flexDirection: 'row',
                         minHeight: '100px',
                         minWidth: minWidth,
-                        backgroundColor: 'red',
-                        padding: '10px'
+                        backgroundColor: theme === lightColors ? lightColors.bottomDisplayBackground : darkColors.bottomDisplayBackground,
+                        padding: '10px',
+                        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.3)',
                     }}>
                         <DisplayNotes/>
                         <DetectChord/>
                         <PlayNotes/>
                     </div>
 
-                    <div style={{display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
-                        {user ? (
-                            <div>
-                                <h1>Welcome, {user.email}!</h1>
-                                <button onClick={handleLogout}>Logout</button>
+                    {/*<div style={{display: 'flex', flexDirection: 'column', overflow: 'auto'}}>*/}
+                    {/*    {user ? (*/}
+                    {/*        <div>*/}
+                    {/*            <h1>Welcome, {user.email}!</h1>*/}
+                    {/*            <button onClick={handleLogout}>Logout</button>*/}
 
-                                <SaveData user={user} openNotes={openNotes} />
-                            </div>
-                        ) : (
-                            <Auth user={user} setUser={setUser}/>
-                        )}
-                    </div>
+                    {/*            <SaveData user={user} />*/}
+                    {/*        </div>*/}
+                    {/*    ) : (*/}
+                    {/*        <Auth user={user} setUser={setUser}/>*/}
+                    {/*    )}*/}
+                    {/*</div>*/}
 
                 </div>
-            </NoteProvider>
         </div>
     );
 }

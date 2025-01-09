@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Chord } from "tonal";
-import { useNoteContext } from "../stateManager/NoteContext"; // Import the NoteContext
+import { useNoteContext } from "../stateManager/NoteContext";
+import {useThemeContext} from "../stateManager/ThemeContext";
+import * as lightColors from "../stateManager/lightMode";
+import * as darkColors from "../stateManager/darkMode"; // Import the NoteContext
 
 const DetectChord = () => {
     const { selectedNotes } = useNoteContext(); // Use the NoteContext
     const [chordNames, setChordNames] = useState([]);
+    const { theme, toggleTheme } = useThemeContext();
 
     const detectChord = () => {
         const chords = Chord.detect(selectedNotes);
@@ -19,7 +23,7 @@ const DetectChord = () => {
         <div style={{
             display: 'flex',
             flexDirection: 'column',
-            backgroundColor: 'lightblue',
+            backgroundColor: theme === lightColors ? lightColors.detectedChordsBGColor : darkColors.detectedChordsBGColor,
             height: '100%',
             width: "100%",
             overflow: 'auto',

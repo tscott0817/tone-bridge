@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { useNoteContext } from "./stateManager/NoteContext"; // Import the context to get selectedNotes
+import { useNoteContext } from "./stateManager/NoteContext";
 import { getScalesAndChords, createScaleOrChord, deleteScaleOrChord } from './backend/api';
-import {Note} from "tonal"; // Import scale/chord functions
+import {useOpenNotesContext} from "./stateManager/OpenNotesContext";
+import {Note} from "tonal";
 
-const SaveData = ({ user, openNotes }) => {
-    const { selectedNotes } = useNoteContext(); // Access selectedNotes from the context
+const SaveData = ({ user }) => {
+    const {openNotes, setOpenNotes, incrementNote, decrementNote, resetOpenNotes} = useOpenNotesContext();
+    const { selectedNotes, selectNote, unselectNote } = useNoteContext();
     const [scales, setScales] = useState([]);
     const [newScaleName, setNewScaleName] = useState('');
     const [newScaleNotes, setNewScaleNotes] = useState('');
-    const [selectedType, setSelectedType] = useState('scale'); // State to hold the selected type (scale, chord, open_notes)
-    const [selectedScaleName, setSelectedScaleName] = useState(''); // State to hold the name for the selected notes scale/chord
+    const [selectedType, setSelectedType] = useState('scale');
+    const [selectedScaleName, setSelectedScaleName] = useState('');
+    const [pendingNotes, setPendingNotes] = useState([]); // To enforce clearing and adding notes in sequence
+    const [keyNote, setKeyNote] = useState("C");
+    const [scaleType, setScaleType] = useState("major");
 
-    // Fetch scales, chords, or open_notes for the logged-in user
     useEffect(() => {
         if (user) {
             const fetchData = async () => {
                 try {
-                    const data = await getScalesAndChords(user.id, selectedType); // Fetch data based on the selected type
+                    const data = await getScalesAndChords(user.id, selectedType);
                     setScales(data);
                 } catch (error) {
                     console.error('Error fetching data:', error.message);
@@ -25,32 +29,8 @@ const SaveData = ({ user, openNotes }) => {
 
             fetchData();
         }
-    }, [user, selectedType]); // Fetch when user or selectedType changes
+    }, [user, selectedType]);
 
-    // Add openNotes to the database
-    const addOpenNotes = async () => {
-        if (!user) {
-            alert('Please log in first!');
-            return;
-        }
-
-        try {
-            // Convert MIDI numbers to letter names using tonal.js
-            const noteNames = openNotes.map(note => Note.fromMidi(note).replace(/[0-9]/g, ''));
-
-            // Create a new open_notes entry in the database with note names
-            await createScaleOrChord(user.id, 'Open Notes', 'open_notes', noteNames);
-
-            // Re-fetch data after adding
-            const data = await getScalesAndChords(user.id, 'open_notes'); // Fetch updated data
-            setScales(data);
-        } catch (error) {
-            console.error('Error creating open notes:', error.message);
-        }
-    };
-
-
-    // Add a new scale, chord, or open_note to the user's profile
     const addScale = async () => {
         if (!user) {
             alert('Please log in first!');
@@ -58,14 +38,11 @@ const SaveData = ({ user, openNotes }) => {
         }
 
         try {
-            // Create a new scale, chord, or open_note in Supabase with the manual notes
             await createScaleOrChord(user.id, newScaleName, selectedType, newScaleNotes.split(','));
 
-            // Re-fetch data after adding a new one
             const data = await getScalesAndChords(user.id, selectedType); // Fetch updated data
             setScales(data);
 
-            // Clear the input fields
             setNewScaleName('');
             setNewScaleNotes('');
         } catch (error) {
@@ -73,7 +50,6 @@ const SaveData = ({ user, openNotes }) => {
         }
     };
 
-    // Add the selected notes from the context to the database with the name and type
     const addSelectedNotes = async () => {
         if (!user) {
             alert('Please log in first!');
@@ -86,11 +62,46 @@ const SaveData = ({ user, openNotes }) => {
         }
 
         try {
-            // Create a new scale, chord, or open_note using selectedNotes
             await createScaleOrChord(user.id, selectedScaleName, selectedType, selectedNotes);
 
-            // Re-fetch data after adding a new one
             const data = await getScalesAndChords(user.id, selectedType); // Fetch updated data
+            setScales(data);
+
+            setSelectedScaleName('');
+        } catch (error) {
+            console.error('Error creating data:', error.message);
+        }
+    };
+
+    const handleDeleteScale = async (scaleId) => {
+        try {
+            await deleteScaleOrChord(scaleId);
+            setScales((prev) => prev.filter(scale => scale.id !== scaleId)); // Remove the deleted item from the state
+        } catch (error) {
+            console.error('Error deleting data:', error.message);
+        }
+    };
+
+    const addOpenNotes = async () => {
+        if (!user) {
+            alert('Please log in first!');
+            return;
+        }
+
+        if (!selectedScaleName) {
+            alert('Please provide a name for the scale or chord.');
+            return;
+        }
+
+        try {
+            // Convert MIDI note numbers in openNotes to note names using Tonal.js
+            const noteNames = openNotes.map((midiNote) => Note.fromMidi(midiNote));
+
+            // Create a new scale, chord, or open_note using the note names
+            await createScaleOrChord(user.id, selectedScaleName, 'open_notes', noteNames);
+
+            // Re-fetch data after adding a new one
+            const data = await getScalesAndChords(user.id, 'open_notes'); // Fetch updated data
             setScales(data);
 
             // Clear the input fields
@@ -100,15 +111,28 @@ const SaveData = ({ user, openNotes }) => {
         }
     };
 
-    // Delete a scale, chord, or open_note from the user's profile
-    const handleDeleteScale = async (scaleId) => {
-        try {
-            await deleteScaleOrChord(scaleId);
-            setScales((prev) => prev.filter(scale => scale.id !== scaleId)); // Remove the deleted item from the state
-        } catch (error) {
-            console.error('Error deleting data:', error.message);
-        }
+    const handleSelectScale = (scaleNotes) => {
+        // Clear existing selected notes before adding new ones
+        selectedNotes.forEach(note => unselectNote(note)); // Unselect all existing notes
+
+        // Create a temporary list of notes (similar to pendingNotes)
+        const octaveNotes = scaleNotes.reduce((noteArray, note) => {
+            for (let octave = 1; octave <= 7; octave++) {
+                noteArray.push(`${note}${octave}`);
+            }
+            return noteArray;
+        }, []);
+
+        // Store new notes for selection
+        setPendingNotes(octaveNotes);
     };
+
+    useEffect(() => {
+        if (pendingNotes.length > 0) {
+            pendingNotes.forEach(note => selectNote(note));
+            setPendingNotes([]);
+        }
+    }, [pendingNotes, selectNote]);
 
     return (
         <div>
@@ -188,9 +212,6 @@ const SaveData = ({ user, openNotes }) => {
                             </label>
                         </div>
                         <button onClick={addSelectedNotes}>Add Selected Notes</button>
-                    </div>
-
-                    <div>
                         <button onClick={addOpenNotes}>Save Open Notes</button>
                     </div>
 
@@ -199,6 +220,9 @@ const SaveData = ({ user, openNotes }) => {
                             <li key={scale.id}>
                                 <strong>{scale.name}</strong>: {scale.data.join(', ')}
                                 <button onClick={() => handleDeleteScale(scale.id)}>Delete</button>
+                                <button onClick={() => handleSelectScale(scale.data)}>Select Notes</button>
+                                {/*<button onClick={() => updateOpenNotesFromDatabase(scale.data)}>Open Notes</button>*/}
+
                             </li>
                         ))}
                     </ul>
@@ -209,4 +233,5 @@ const SaveData = ({ user, openNotes }) => {
         </div>
     );
 };
+
 export default SaveData;

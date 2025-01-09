@@ -13,12 +13,16 @@ import {
     openNotesContainerColor
 } from "../../stateManager/lightMode";
 import { RiResetLeftLine } from "react-icons/ri";
+import {useOpenNotesContext} from "../../stateManager/OpenNotesContext";
+import * as lightColors from "../../stateManager/lightMode";
+import * as darkColors from "../../stateManager/darkMode";
+import {useThemeContext} from "../../stateManager/ThemeContext";
 
 
-const Guitar = ({openNotes, setOpenNotes, initialNotes}) => {
-    // const initialNotes = [40, 45, 50, 55, 59, 64];
-    // const [openNotes, setOpenNotes] = useState(initialNotes);
+const Guitar = () => {
+    const {openNotes, incrementNote, decrementNote, resetOpenNotes} = useOpenNotesContext();
     const [showOctave, setShowOctave] = useState(false); // State for toggling octave display
+    const { theme, toggleTheme } = useThemeContext();
 
     const noteNames = openNotes.map(note => {
         const noteName = Note.fromMidi(note);
@@ -28,18 +32,6 @@ const Guitar = ({openNotes, setOpenNotes, initialNotes}) => {
             return noteName.replace(/[0-9]/g, '');  // Remove the octave number if showOctave is false
         }
     });
-
-    const incrementNote = (index) => {
-        setOpenNotes(openNotes.map((note, i) => i === index ? note + 1 : note));
-    };
-
-    const decrementNote = (index) => {
-        setOpenNotes(openNotes.map((note, i) => i === index ? note - 1 : note));
-    };
-
-    const resetNotes = () => {
-        setOpenNotes(initialNotes);
-    };
 
     const toggleOctaves = () => {
         setShowOctave(!showOctave); // Toggle the showOctave state
@@ -57,7 +49,7 @@ const Guitar = ({openNotes, setOpenNotes, initialNotes}) => {
                 display: 'flex',
                 flexDirection: 'row',  // Keep everything in a row
                 justifyContent: 'center',
-                backgroundColor: openNotesContainerColor,
+                //backgroundColor: openNotesContainerColor,
                 // backgroundColor: 'red',
                 // marginBottom: '10px',
                 height: '40px',
@@ -74,7 +66,7 @@ const Guitar = ({openNotes, setOpenNotes, initialNotes}) => {
                     flexWrap: 'wrap',  // Allow wrapping for notes
                     justifyContent: 'center',  // Keep note buttons centered
                     // backgroundColor: noColor,
-                    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                    backgroundColor: theme === lightColors ? lightColors.openNotesContainerColor : darkColors.openNotesContainerColor,
                     borderRadius: '5px',
                 }}>
                     {noteNames.map((name, index) => (
@@ -90,15 +82,21 @@ const Guitar = ({openNotes, setOpenNotes, initialNotes}) => {
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     padding: '5px',
-                                    fontSize: '16px',
+                                    //fontSize: '16px',
                                     border: 'none',
                                     backgroundColor: 'rgba(0, 0, 0, 0.0)',
                                     cursor: 'pointer',
                                 }}
                             >
-                                <FaMinus/>
+                                <FaMinus style={{
+                                    fontSize: '10px'
+                                }}/>
                             </button>
-                            {name}
+                            <span style={{
+                                fontSize: '20px',
+                            }}>
+                                {name}
+                            </span>
                             <button
                                 onClick={() => incrementNote(index)}
                                 style={{
@@ -112,13 +110,13 @@ const Guitar = ({openNotes, setOpenNotes, initialNotes}) => {
                                     cursor: 'pointer',
                                 }}
                             >
-                                <FaPlus/>
+                                <FaPlus style={{fontSize: '10px'}}/>
                             </button>
                         </div>
                     ))}
                 </div>
                 <div>
-                    <button onClick={resetNotes} style={{
+                    <button onClick={resetOpenNotes} style={{
                         backgroundColor: noColor,
                         border: 'none',
                         borderRadius: '5px',

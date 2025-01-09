@@ -3,10 +3,15 @@ import { useNoteContext } from "../../../stateManager/NoteContext";
 import { Note } from "tonal";
 import woodImage from '../../../img/wood.png';
 import {emptyNoteColor, fretColor, neckColor, stringColor} from "../../../stateManager/lightMode";
+import * as lightColors from "../../../stateManager/lightMode";
+import * as darkColors from "../../../stateManager/darkMode";
+import theme from "tailwindcss/defaultTheme";
+import {useThemeContext} from "../../../stateManager/ThemeContext";
 
 const Neck = ({ openNotesProp, showOctave }) => {
     const { selectedNotes, selectNote, unselectNote, scaleDegrees, chordDegrees } = useNoteContext();
     const [openNotes, setOpenNotes] = useState(openNotesProp);
+    const { theme, toggleTheme } = useThemeContext();
 
     useEffect(() => {
         setOpenNotes(openNotesProp);
@@ -99,9 +104,13 @@ const Neck = ({ openNotesProp, showOctave }) => {
         }
     };
 
+    useEffect(() => {
+        console.log('Notes On Neck: ' + selectedNotes);  // Log selectedNotes to check if it's updated correctly
+    }, [selectedNotes]);
+
     return (
         <div className="neck" style={{
-            backgroundColor: neckColor,
+            backgroundColor: theme === lightColors ? lightColors.neckColor : darkColors.neckColor,
             position: 'relative',
             flex: 1,
             display: 'flex',
@@ -134,15 +143,17 @@ const Neck = ({ openNotesProp, showOctave }) => {
                         const note = calculateNote(fret, stringIndex);
                         const noteToDisplay = showOctave ? note : note.replace(/\d$/, ''); // Remove octave if not displayed
                         const leftPosition = `${(fret + 0.5) * (100 / numFrets)}%`;
-                        const noteHeight = (stringIndex - 1) * (100 / 6) + 15 / 2;
+                        // const noteHeight = (stringIndex - 1) * (100 / 6) + 15 / 2;
+                        const verticalSpacing = 8.0; // Adjust this value for more or less space between rows
+                        const noteHeight = (stringIndex - 1) * (100 / 6) + verticalSpacing;
                         const left = index === 0 ? `calc(${leftPosition} - 22.5px)` : `calc(${leftPosition} - 22.5px)`;
                         const noteStyle = {
                             position: 'absolute',
                             left: left,
                             transform: 'translateY(-50%)',
                             top: `${noteHeight}%`,
-                            width: '45px',
-                            height: '45px',
+                            width: '50px',
+                            height: '50px',
                             border: '1px solid black',
                             borderRadius: '50%',
                             backgroundColor: setNoteColor(note),
@@ -187,7 +198,7 @@ const Neck = ({ openNotesProp, showOctave }) => {
                             width: '105.3%',
                             position: 'absolute',
                             right: 0,
-                            top: `${(stringIndex - 1) * (100 / 6)}%`,
+                            top: `${(stringIndex - 1) * (100 / 6) + 1.5 }%`,
                             zIndex: 1
                         }}
                     ></div>

@@ -1,9 +1,13 @@
 // src/components/displayNotes.js
 import React from 'react';
 import { useNoteContext } from '../stateManager/NoteContext';
+import * as lightColors from "../stateManager/lightMode";
+import * as darkColors from "../stateManager/darkMode";
+import {useThemeContext} from "../stateManager/ThemeContext";
 
 const DisplayNotes = () => {
     const { selectedNotes, rootNote } = useNoteContext();
+    const { theme, toggleTheme } = useThemeContext();
 
     // Function to clean notes and remove duplicates
     const cleanNotes = (notes) => {
@@ -28,7 +32,7 @@ const DisplayNotes = () => {
         <div style={{
             display: 'flex',
             flexDirection: 'column',
-            backgroundColor: 'lightgray',
+            backgroundColor: theme === lightColors ? lightColors.selectedNotesBGColor : darkColors.selectedNotesBGColor,
             height: '100%',
             width: "100%",
             overflow: 'auto',

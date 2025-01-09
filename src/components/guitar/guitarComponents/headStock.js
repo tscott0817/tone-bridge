@@ -76,23 +76,33 @@ const Headstock = ({ openNotesProp, showOctave }) => {
     };
 
     return (
-        <div className="headstock" style={{
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            position: 'relative',
-            width: '100%',
-        }}>
-            {strings.map(({ string, midiNote }) => {
+        <div
+            className="headstock"
+            style={{
+                backgroundColor: theme === lightColors ? lightColors.headStockColor : darkColors.headStockColor,
+                position: 'relative',
+                width: '100%',
+                height: '100%', // Set a fixed height for the parent container
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between', // Space the strings evenly
+                alignItems: 'center', // Center the strings horizontally
+            }}
+        >
+            {strings.map(({string, midiNote}, index) => {
                 const note = Note.name(Note.fromMidi(midiNote));
                 const displayNote = showOctave ? note : note.substring(0, note.length - 1); // Adjust display based on showOctave
                 const stringStyle = {
-                    width: '45px',
-                    height: '45px',
+                    width: '35px',
+                    height: '47.5px',
                     border: '1px solid black',
-                    borderRadius: '50%',
+                    borderRadius: '25%',
                     backgroundColor: setNoteColor(note),
-                    margin: 'auto',
-                    marginTop: '2px',
-                    marginBottom: '7px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: index === 0 ? '5px' : '0', // Add margin only to the first note
+                    marginBottom: index === strings.length - 1 ? '7.5px' : '0', // Add margin only to the last note
                 };
 
                 return (
@@ -109,9 +119,9 @@ const Headstock = ({ openNotesProp, showOctave }) => {
                                     width: '20px',
                                     height: '20px',
                                     borderRadius: '50%',
-                                    backgroundColor: 'transparent',
-                                    margin: 'auto',
-                                    marginTop: '10px',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
                                 }}
                             >
                                 {displayNote} {/* Display the note based on showOctave */}

@@ -2,9 +2,14 @@ import React from "react";
 import * as Tone from 'tone';
 import { useNoteContext } from "../stateManager/NoteContext";
 import { FaCirclePlay } from "react-icons/fa6";
+import * as lightColors from "../stateManager/lightMode";
+import * as darkColors from "../stateManager/darkMode";
+import {useThemeContext} from "../stateManager/ThemeContext";
 
 const PlayNotes = () => {
     const { selectedNotes, selectNote, unselectNote, setScaleDegrees, setChordDegrees } = useNoteContext();
+    const { theme, toggleTheme } = useThemeContext();
+
 
     const handleNoteClick = (note, octave) => {
         const fullNote = note + octave;
@@ -40,7 +45,7 @@ const PlayNotes = () => {
         <div style={{
             height: "100%",
             width: "100%",
-            backgroundColor: "green",
+            backgroundColor: theme === lightColors ? lightColors.playButtonContainerColor : darkColors.playButtonContainerColor,
             overflow: 'auto',
             display: 'flex',
             alignItems: 'center',

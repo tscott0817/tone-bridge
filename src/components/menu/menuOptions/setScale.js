@@ -3,7 +3,7 @@ import { useNoteContext } from "../../../stateManager/NoteContext"; // Import th
 import { Scale, ScaleType } from 'tonal';
 
 const SetScale = () => {
-    const { selectedNotes, selectNote, unselectNote, setScaleDegrees, clearSelectedNotes } = useNoteContext();
+    const { selectedNotes, selectNote, unselectNote, setScaleDegrees } = useNoteContext();
     const [keyNote, setKeyNote] = useState("C");
     const [scaleType, setScaleType] = useState("major");
     const [pendingNotes, setPendingNotes] = useState([]); // To enforce clearing and adding notes in sequence
@@ -70,9 +70,9 @@ const SetScale = () => {
             overflow: 'auto',
             display: 'flex',
             borderRadius: '10px',
-            flexDirection: 'column',  // Stack elements vertically
+            flexDirection: 'column',
             justifyContent: 'center',
-            alignItems: 'flex-start',  // Left align the children
+            alignItems: 'flex-start',
             gap: '10px'
         }}>
             <div style={{ width: '90%', marginLeft: '5%',  }}>
