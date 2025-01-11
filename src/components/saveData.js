@@ -13,6 +13,10 @@ const SaveData = ({ user }) => {
     const [selectedType, setSelectedType] = useState('scale');
     const [selectedScaleName, setSelectedScaleName] = useState('');
     const [pendingNotes, setPendingNotes] = useState([]); // To enforce clearing and adding notes in sequence
+    // Separate the scales into categories based on their type
+    const scalesList = scales.filter(scale => scale.type === 'scale');
+    const chordsList = scales.filter(scale => scale.type === 'chord');
+    const openNotesList = scales.filter(scale => scale.type === 'open_notes');
 
     useEffect(() => {
         if (user) {
@@ -134,51 +138,6 @@ const SaveData = ({ user }) => {
                     <div>
                         <input
                             type="text"
-                            placeholder="Name"
-                            value={newScaleName}
-                            onChange={(e) => setNewScaleName(e.target.value)}
-                        />
-                        <input
-                            type="text"
-                            placeholder="Notes (comma separated)"
-                            value={newScaleNotes}
-                            onChange={(e) => setNewScaleNotes(e.target.value)}
-                        />
-                        <div>
-                            <label>
-                                <input
-                                    type="radio"
-                                    value="scale"
-                                    checked={selectedType === 'scale'}
-                                    onChange={() => setSelectedType('scale')}
-                                />
-                                Scale
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    value="chord"
-                                    checked={selectedType === 'chord'}
-                                    onChange={() => setSelectedType('chord')}
-                                />
-                                Chord
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    value="open_notes"
-                                    checked={selectedType === 'open_notes'}
-                                    onChange={() => setSelectedType('open_notes')}
-                                />
-                                Open Notes
-                            </label>
-                        </div>
-                        <button onClick={addScale}>Add Manual Notes</button>
-                    </div>
-
-                    <div>
-                        <input
-                            type="text"
                             placeholder="Name for Selected Notes"
                             value={selectedScaleName}
                             onChange={(e) => setSelectedScaleName(e.target.value)}
@@ -207,14 +166,38 @@ const SaveData = ({ user }) => {
                         <button onClick={addOpenNotes}>Save Open Notes</button>
                     </div>
 
+                    {/* Display Scales */}
+                    <h2>Scales</h2>
                     <ul>
-                        {scales.map((scale) => (
+                        {scalesList.map((scale) => (
                             <li key={scale.id}>
                                 <strong>{scale.name}</strong>: {scale.data.join(', ')}
                                 <button onClick={() => handleDeleteScale(scale.id)}>Delete</button>
                                 <button onClick={() => handleSelectScale(scale.data)}>Select Notes</button>
-                                {/*<button onClick={() => updateOpenNotesFromDatabase(scale.data)}>Open Notes</button>*/}
+                            </li>
+                        ))}
+                    </ul>
 
+                    {/* Display Chords */}
+                    <h2>Chords</h2>
+                    <ul>
+                        {chordsList.map((scale) => (
+                            <li key={scale.id}>
+                                <strong>{scale.name}</strong>: {scale.data.join(', ')}
+                                <button onClick={() => handleDeleteScale(scale.id)}>Delete</button>
+                                <button onClick={() => handleSelectScale(scale.data)}>Select Notes</button>
+                            </li>
+                        ))}
+                    </ul>
+
+                    {/* Display Open Notes */}
+                    <h2>Open Notes</h2>
+                    <ul>
+                        {openNotesList.map((scale) => (
+                            <li key={scale.id}>
+                                <strong>{scale.name}</strong>: {scale.data.join(', ')}
+                                <button onClick={() => handleDeleteScale(scale.id)}>Delete</button>
+                                <button onClick={() => handleSelectScale(scale.data)}>Select Notes</button>
                             </li>
                         ))}
                     </ul>
