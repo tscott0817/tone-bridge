@@ -13,7 +13,7 @@ import * as lightColors from "./stateManager/lightMode";
 import * as darkColors from "./stateManager/darkMode";
 import {FaSun, FaMoon} from "react-icons/fa";
 import Auth from "./backend/auth";
-import SaveData from "./saveData";
+import SaveData from "./components/saveData";
 import {supabase} from "./backend/client";
 import {logoutUser} from "./backend/api";
 import {Scale} from "tonal"; // Import ScaleList
@@ -172,18 +172,18 @@ function ThemedApp() {
                         <PlayNotes/>
                     </div>
 
-                    {/*<div style={{display: 'flex', flexDirection: 'column', overflow: 'auto'}}>*/}
-                    {/*    {user ? (*/}
-                    {/*        <div>*/}
-                    {/*            <h1>Welcome, {user.email}!</h1>*/}
-                    {/*            <button onClick={handleLogout}>Logout</button>*/}
+                    <div style={{display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+                        {user ? (
+                            <div>
+                                <h1>Welcome, {user.email}!</h1>
+                                <button onClick={handleLogout}>Logout</button>
 
-                    {/*            <SaveData user={user} />*/}
-                    {/*        </div>*/}
-                    {/*    ) : (*/}
-                    {/*        <Auth user={user} setUser={setUser}/>*/}
-                    {/*    )}*/}
-                    {/*</div>*/}
+                                <SaveData user={user} />
+                            </div>
+                        ) : (
+                            <Auth user={user} setUser={setUser}/>
+                        )}
+                    </div>
 
                 </div>
         </div>

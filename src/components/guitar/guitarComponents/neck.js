@@ -63,6 +63,7 @@ const Neck = ({ openNotesProp, showOctave }) => {
     };
 
     const setNoteColor = (note) => {
+        // console.log("Setting color for note:", note, "Selected notes:", selectedNotes);
         const noteString = note.substring(0, note.length - 1);
 
         let degreeColors = {};

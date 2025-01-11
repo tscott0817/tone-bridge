@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useNoteContext } from "./stateManager/NoteContext";
-import { getScalesAndChords, createScaleOrChord, deleteScaleOrChord } from './backend/api';
-import {useOpenNotesContext} from "./stateManager/OpenNotesContext";
+import { useNoteContext } from "../stateManager/NoteContext";
+import { getScalesAndChords, createScaleOrChord, deleteScaleOrChord } from '../backend/api';
+import {useOpenNotesContext} from "../stateManager/OpenNotesContext";
 import {Note} from "tonal";
 
 const SaveData = ({ user }) => {
@@ -13,8 +13,6 @@ const SaveData = ({ user }) => {
     const [selectedType, setSelectedType] = useState('scale');
     const [selectedScaleName, setSelectedScaleName] = useState('');
     const [pendingNotes, setPendingNotes] = useState([]); // To enforce clearing and adding notes in sequence
-    const [keyNote, setKeyNote] = useState("C");
-    const [scaleType, setScaleType] = useState("major");
 
     useEffect(() => {
         if (user) {
@@ -112,19 +110,12 @@ const SaveData = ({ user }) => {
     };
 
     const handleSelectScale = (scaleNotes) => {
+        console.log("scaleNotes: " + scaleNotes)
         // Clear existing selected notes before adding new ones
         selectedNotes.forEach(note => unselectNote(note)); // Unselect all existing notes
 
-        // Create a temporary list of notes (similar to pendingNotes)
-        const octaveNotes = scaleNotes.reduce((noteArray, note) => {
-            for (let octave = 1; octave <= 7; octave++) {
-                noteArray.push(`${note}${octave}`);
-            }
-            return noteArray;
-        }, []);
-
         // Store new notes for selection
-        setPendingNotes(octaveNotes);
+        setPendingNotes(scaleNotes);
     };
 
     useEffect(() => {
@@ -132,6 +123,7 @@ const SaveData = ({ user }) => {
             pendingNotes.forEach(note => selectNote(note));
             setPendingNotes([]);
         }
+        // console.log(selectedNotes);
     }, [pendingNotes, selectNote]);
 
     return (

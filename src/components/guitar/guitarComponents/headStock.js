@@ -93,10 +93,13 @@ const Headstock = ({ openNotesProp, showOctave }) => {
                 const note = Note.name(Note.fromMidi(midiNote));
                 const displayNote = showOctave ? note : note.substring(0, note.length - 1); // Adjust display based on showOctave
                 const stringStyle = {
-                    width: '35px',
-                    height: '47.5px',
+                    // width: '35px',
+                    // height: '47.5px',
+                    width: '50px',
+                    height: '50px',
                     border: '1px solid black',
-                    borderRadius: '25%',
+                    // borderRadius: '25%',
+                    borderRadius: '50%',
                     backgroundColor: setNoteColor(note),
                     display: 'flex',
                     justifyContent: 'center',
