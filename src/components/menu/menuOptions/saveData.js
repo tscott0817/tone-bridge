@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useNoteContext } from "../stateManager/NoteContext";
-import { getScalesAndChords, createScaleOrChord, deleteScaleOrChord } from '../backend/api';
-import {useOpenNotesContext} from "../stateManager/OpenNotesContext";
+import { useNoteContext } from "../../../stateManager/NoteContext";
+import { getScalesAndChords, createScaleOrChord, deleteScaleOrChord } from '../../../backend/api';
+import {useOpenNotesContext} from "../../../stateManager/OpenNotesContext";
 import {Note} from "tonal";
 
 const SaveData = ({ user }) => {
@@ -14,7 +14,6 @@ const SaveData = ({ user }) => {
     const [selectedScaleName, setSelectedScaleName] = useState('');
     const [pendingNotes, setPendingNotes] = useState([]); // To enforce clearing and adding notes in sequence
     const [pendingOpenNotes, setPendingOpenNotes] = useState([]);
-    // Separate the scales into categories based on their type
     const scalesList = currentNotes.filter(notes => notes.type === 'scale');
     const chordsList = currentNotes.filter(notes => notes.type === 'chord');
     const openNotesList = currentNotes.filter(notes => notes.type === 'open_notes');
@@ -192,39 +191,60 @@ const SaveData = ({ user }) => {
 
                     {/* Display Scales */}
                     <h2>Scales</h2>
-                    <ul>
+                    <div>
                         {scalesList.map((notes) => (
-                            <li key={notes.id}>
-                                <strong>{notes.name}</strong>: {notes.data.join(', ')}
-                                <button onClick={() => handleDeleteScale(notes.id)}>Delete</button>
-                                <button onClick={() => handleSelectScale(notes.data)}>Display Scale</button>
-                            </li>
+                            <div key={notes.id} style={{ marginBottom: '15px' }}>
+                                <div style={{ marginBottom: '5px' }}>
+                                    <strong>{notes.name}</strong>
+                                </div>
+                                <div style={{ marginBottom: '5px' }}>
+                                    <span>{notes.data.join(', ')}</span>
+                                </div>
+                                <div>
+                                    <button onClick={() => handleDeleteScale(notes.id)}>Delete</button>
+                                    <button onClick={() => handleSelectScale(notes.data)}>Display Scale</button>
+                                </div>
+                            </div>
                         ))}
-                    </ul>
+                    </div>
 
                     {/* Display Chords */}
                     <h2>Chords</h2>
-                    <ul>
+                    <div>
                         {chordsList.map((notes) => (
-                            <li key={notes.id}>
-                                <strong>{notes.name}</strong>: {notes.data.join(', ')}
-                                <button onClick={() => handleDeleteScale(notes.id)}>Delete</button>
-                                <button onClick={() => handleSelectScale(notes.data)}>Display Chord</button>
-                            </li>
+                            <div key={notes.id} style={{ marginBottom: '15px' }}>
+                                <div style={{ marginBottom: '5px' }}>
+                                    <strong>{notes.name}</strong>
+                                </div>
+                                <div style={{ marginBottom: '5px' }}>
+                                    <span>{notes.data.join(', ')}</span>
+                                </div>
+                                <div>
+                                    <button onClick={() => handleDeleteScale(notes.id)}>Delete</button>
+                                    <button onClick={() => handleSelectScale(notes.data)}>Display Chord</button>
+                                </div>
+                            </div>
                         ))}
-                    </ul>
+                    </div>
 
                     {/* Display Open Notes */}
                     <h2>Open Notes</h2>
-                    <ul>
+                    <div>
                         {openNotesList.map((notes) => (
-                            <li key={notes.id}>
-                                <strong>{notes.name}</strong>: {notes.data.join(', ')}
-                                <button onClick={() => handleDeleteScale(notes.id)}>Delete</button>
-                                <button onClick={() => handleOpenNotes(notes.data)}>Set Open Notes</button>
-                            </li>
+                            <div key={notes.id} style={{ marginBottom: '15px' }}>
+                                <div style={{ marginBottom: '5px' }}>
+                                    <strong>{notes.name}</strong>
+                                </div>
+                                <div style={{ marginBottom: '5px' }}>
+                                    <span>{notes.data.join(', ')}</span>
+                                </div>
+                                <div>
+                                    <button onClick={() => handleDeleteScale(notes.id)}>Delete</button>
+                                    <button onClick={() => handleOpenNotes(notes.data)}>Set Open Notes</button>
+                                </div>
+                            </div>
                         ))}
-                    </ul>
+                    </div>
                 </>
             ) : (
                 <p>Please log in to view and create scales/chords/open notes.</p>

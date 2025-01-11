@@ -13,7 +13,7 @@ import * as lightColors from "./stateManager/lightMode";
 import * as darkColors from "./stateManager/darkMode";
 import {FaSun, FaMoon} from "react-icons/fa";
 import Auth from "./backend/auth";
-import SaveData from "./components/saveData";
+import SaveData from "./components/menu/menuOptions/saveData";
 import {supabase} from "./backend/client";
 import {logoutUser} from "./backend/api";
 import {Scale} from "tonal"; // Import ScaleList
@@ -35,7 +35,7 @@ const Piano = () => <div style={{ color: 'white' }}>Piano Component</div>;
 function ThemedApp() {
     const minWidth = '1000px';
     const { theme, toggleTheme } = useThemeContext();
-    const [user, setUser] = useState(null);
+    // const [user, setUser] = useState(null);
     const [currentInstrument, setCurrentInstrument] = useState('Guitar');
 
     // const instruments = {
@@ -43,34 +43,34 @@ function ThemedApp() {
     //     Piano: <Piano />,
     // };
 
-    const handleLogout = async () => {
-        try {
-            await logoutUser();
-            setUser(null);
-        } catch (error) {
-            console.error('Error logging out:', error);
-        }
-    };
-
-    useEffect(() => {
-        const checkUser = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            setUser(user);
-        };
-        checkUser();
-
-        const handleBeforeUnload = async (event) => {
-            if (user) {
-                await handleLogout();
-            }
-        };
-
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-    }, [user]);
+    // const handleLogout = async () => {
+    //     try {
+    //         await logoutUser();
+    //         setUser(null);
+    //     } catch (error) {
+    //         console.error('Error logging out:', error);
+    //     }
+    // };
+    //
+    // useEffect(() => {
+    //     const checkUser = async () => {
+    //         const { data: { user } } = await supabase.auth.getUser();
+    //         setUser(user);
+    //     };
+    //     checkUser();
+    //
+    //     const handleBeforeUnload = async (event) => {
+    //         if (user) {
+    //             await handleLogout();
+    //         }
+    //     };
+    //
+    //     window.addEventListener('beforeunload', handleBeforeUnload);
+    //
+    //     return () => {
+    //         window.removeEventListener('beforeunload', handleBeforeUnload);
+    //     };
+    // }, [user]);
 
     return (
         <div className="themedApp">
@@ -172,18 +172,18 @@ function ThemedApp() {
                         <PlayNotes/>
                     </div>
 
-                    <div style={{display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
-                        {user ? (
-                            <div>
-                                <h1>Welcome, {user.email}!</h1>
-                                <button onClick={handleLogout}>Logout</button>
+                    {/*<div style={{display: 'flex', flexDirection: 'column', overflow: 'auto'}}>*/}
+                    {/*    {user ? (*/}
+                    {/*        <div>*/}
+                    {/*            <h1>Welcome, {user.email}!</h1>*/}
+                    {/*            <button onClick={handleLogout}>Logout</button>*/}
 
-                                <SaveData user={user} />
-                            </div>
-                        ) : (
-                            <Auth user={user} setUser={setUser}/>
-                        )}
-                    </div>
+                    {/*            <SaveData user={user} />*/}
+                    {/*        </div>*/}
+                    {/*    ) : (*/}
+                    {/*        <Auth user={user} setUser={setUser}/>*/}
+                    {/*    )}*/}
+                    {/*</div>*/}
 
                 </div>
         </div>
