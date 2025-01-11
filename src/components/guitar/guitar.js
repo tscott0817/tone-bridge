@@ -23,15 +23,17 @@ const Guitar = () => {
     const {openNotes, incrementNote, decrementNote, resetOpenNotes} = useOpenNotesContext();
     const [showOctave, setShowOctave] = useState(false); // State for toggling octave display
     const { theme, toggleTheme } = useThemeContext();
+    console.log('open notes: ' + openNotes);
 
     const noteNames = openNotes.map(note => {
+        // console.log('open notes' + openNotes);
         const noteName = Note.fromMidi(note);
         if (showOctave) {
             return noteName;  // Show the full note with the octave number
         } else {
             return noteName.replace(/[0-9]/g, '');  // Remove the octave number if showOctave is false
         }
-    });
+    }, [openNotes]);
 
     const toggleOctaves = () => {
         setShowOctave(!showOctave); // Toggle the showOctave state
