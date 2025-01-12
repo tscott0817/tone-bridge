@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { loginUser, createUser } from './api'; // Assuming you have an API to handle login/signup
 import { supabase } from './client'; // Import the supabase client
 
-
 const Auth = ({ setUser }) => {
     const [email, setEmail] = useState('');
+    const [username, setUsername] = useState(''); // New state for username
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState(''); // New state for confirm password
     const [isLogin, setIsLogin] = useState(true);
     const [error, setError] = useState('');
     const [isSignedUp, setIsSignedUp] = useState(false); // New state to track signup status
@@ -25,6 +26,11 @@ const Auth = ({ setUser }) => {
     const handleAuth = async (e) => {
         e.preventDefault();
         try {
+            if (!isLogin && password !== confirmPassword) {
+                setError('Passwords do not match. Please try again.');
+                return;
+            }
+
             let user;
             if (isLogin) {
                 user = await loginUser(email, password); // Login
@@ -43,7 +49,9 @@ const Auth = ({ setUser }) => {
     };
 
     return (
-        <div>
+        <div style={{
+            marginTop: '10px'
+        }}>
             {isSignedUp ? (
                 <div>
                     <p>Please check your email for verification.</p>
@@ -65,12 +73,33 @@ const Auth = ({ setUser }) => {
                             placeholder="Password"
                             required
                         />
+                        {!isLogin && (
+                            <>
+                                <input
+                                    type="password"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    placeholder="Confirm Password"
+                                    required
+                                />
+                                <input
+                                    type="text"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    placeholder="Username"
+                                    required
+                                />
+                            </>
+                        )}
                         <button type="submit">{isLogin ? 'Login' : 'Sign Up'}</button>
                     </form>
-                    <button onClick={() => setIsLogin(!isLogin)}>
+                    <button onClick={() => {
+                        setIsLogin(!isLogin);
+                        setError(''); // Clear error when switching modes
+                    }}>
                         {isLogin ? 'Need an account? Sign Up' : 'Already have an account? Login'}
                     </button>
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {error && <p style={{color: 'red'}}>{error}</p>}
                 </>
             )}
         </div>
@@ -78,4 +107,3 @@ const Auth = ({ setUser }) => {
 };
 
 export default Auth;
-

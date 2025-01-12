@@ -74,6 +74,8 @@ const SetChord = () => {
                 justifyContent: "center",
                 alignItems: "flex-start",  // Left align the children
                 gap: "10px",
+                marginTop: '10px',
+                boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
             }}
         >
             <div style={{ width: '90%', marginLeft: '5%' }}>

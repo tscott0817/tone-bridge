@@ -1,13 +1,14 @@
-export const mainBGColor = '#f0f0f0';
+export const mainBGColor = '#f4f3f2';
+export const mainComponentColor = '#f4f3f2';
 export const buttonCompressed = '#c7c7c7'
 export const noColor = 'rgba(0, 0, 0, 0.0)'
-export const headerBGColor = '#f7f7f7';
+export const headerBGColor = '#f4f3f2';
 export const fretNumberContainerColor = 'rgba(0, 0, 0, 0.0)';
 export const tempColor = 'black'
 
 
 // Guitar Parts
-export const guitarContainerColor = '#f7f7f7';
+export const guitarContainerColor = '#f4f3f2';
 // export const guitarBGColor = 'rgba(0, 0, 0, 0.0)';
 export const guitarBGColor = '#a36233';
 export const neckColor = 'rgba(0, 0, 0, 0.0)';
@@ -18,7 +19,7 @@ export const emptyNoteColor = 'rgba(168, 193, 221, 0.8)'
 export const openNotesContainerColor = 'rgba(0, 0, 0, 0.15)';
 
 // Display Sections
-export const bottomDisplayBackground = '#f7f7f7';
+export const bottomDisplayBackground = '#f4f3f2';
 export const selectedNotesBGColor = 'rgba(0, 0, 0, 0.0)';
 export const detectedChordsBGColor = 'rgba(0, 0, 0, 0.0)';
 export const playButtonContainerColor = 'rgba(0, 0, 0, 0.0)';

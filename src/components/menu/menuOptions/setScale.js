@@ -73,7 +73,9 @@ const SetScale = () => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'flex-start',
-            gap: '10px'
+            gap: '10px',
+            marginTop: '10px',
+            boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
         }}>
             <div style={{ width: '90%', marginLeft: '5%',  }}>
                 <label htmlFor="keyNote">Tonic: </label>

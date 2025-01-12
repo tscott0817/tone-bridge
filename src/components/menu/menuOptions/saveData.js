@@ -3,6 +3,8 @@ import { useNoteContext } from "../../../stateManager/NoteContext";
 import { getScalesAndChords, createScaleOrChord, deleteScaleOrChord } from '../../../backend/api';
 import {useOpenNotesContext} from "../../../stateManager/OpenNotesContext";
 import {Note} from "tonal";
+import RetrieveData from "./retrieveData";
+import AddData from "./addData";
 
 const SaveData = ({ user }) => {
     const {openNotes, setOpenNotes, selectOpenNote, unselectOpenNote} = useOpenNotesContext();
@@ -17,6 +19,8 @@ const SaveData = ({ user }) => {
     const scalesList = currentNotes.filter(notes => notes.type === 'scale');
     const chordsList = currentNotes.filter(notes => notes.type === 'chord');
     const openNotesList = currentNotes.filter(notes => notes.type === 'open_notes');
+    const [activeSection, setActiveSection] = useState('addData');
+    const [showAddData, setShowAddData] = useState(true);
 
     useEffect(() => {
         if (user) {
@@ -32,25 +36,6 @@ const SaveData = ({ user }) => {
             fetchData();
         }
     }, [user, selectedType]);
-
-    const addScale = async () => {
-        if (!user) {
-            alert('Please log in first!');
-            return;
-        }
-
-        try {
-            await createScaleOrChord(user.id, newScaleName, selectedType, newScaleNotes.split(','));
-
-            const data = await getScalesAndChords(user.id, selectedType); // Fetch updated data
-            setCurrentNotes(data);
-
-            setNewScaleName('');
-            setNewScaleNotes('');
-        } catch (error) {
-            console.error('Error creating data:', error.message);
-        }
-    };
 
     const addSelectedNotes = async () => {
         if (!user) {
@@ -137,15 +122,6 @@ const SaveData = ({ user }) => {
         setOpenNotes(midiNotes); // Replace openNotes with the new midiNotes
     };
 
-    // const handleOpenNotes = (openNotes) => {
-    //     openNotes.forEach(note => unselectOpenNote(note));
-    //     // Convert note names to MIDI numbers before storing
-    //     const midiNotes = openNotes.map(note => Note.midi(note));
-    //     setPendingOpenNotes(midiNotes);
-    //
-    //     //setPendingOpenNotes(openNotes);
-    // };
-
     useEffect(() => {
         if (pendingOpenNotes.length > 0) {
             pendingOpenNotes.forEach(note => selectOpenNote(note));
@@ -154,97 +130,85 @@ const SaveData = ({ user }) => {
     }, [pendingOpenNotes, selectOpenNote]);
 
     return (
-        <div>
-            <h1>Scales, Chords, and Open Notes</h1>
+        <div style={{
+            marginTop: '24px',
+            width: '90%',
+            marginLeft: '5%',
+        }}>
             {user ? (
                 <>
-                    <div>
-                        <input
-                            type="text"
-                            placeholder="Name for Selected Notes"
-                            value={selectedScaleName}
-                            onChange={(e) => setSelectedScaleName(e.target.value)}
+                    {/* Toggle Buttons */}
+                    <div style={{
+                        marginTop: '10px',
+                        marginBottom: '10px',
+                        display: 'flex',
+                        gap: '10px', // Space between buttons
+                        justifyContent: 'center', // Center the buttons
+                    }}>
+                        <button
+                            onClick={() => setActiveSection('addData')}
+                            style={{
+                                padding: '10px 20px',
+                                border: 'none',
+                                backgroundColor: activeSection === 'addData' ? '#007BFF' : '#cccccc', // Blue if selected, gray if not
+                                color: activeSection === 'addData' ? '#fff' : '#333', // White text if selected, dark text if not
+                                borderRadius: '5px',
+                                cursor: 'pointer',
+                                flex: 1, // Make buttons take equal width
+                                fontSize: '16px',
+                                fontWeight: '500',
+                                transition: 'background-color 0.3s ease, transform 0.2s ease',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                                outline: 'none',
+                            }}
+                            onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
+                            onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+                        >
+                            Add New Data
+                        </button>
+                        <button
+                            onClick={() => setActiveSection('retrieveData')}
+                            style={{
+                                padding: '10px 20px',
+                                border: 'none',
+                                backgroundColor: activeSection === 'retrieveData' ? '#007BFF' : '#cccccc', // Blue if selected, gray if not
+                                color: activeSection === 'retrieveData' ? '#fff' : '#333', // White text if selected, dark text if not
+                                borderRadius: '5px',
+                                cursor: 'pointer',
+                                flex: 1, // Make buttons take equal width
+                                fontSize: '16px',
+                                fontWeight: '500',
+                                transition: 'background-color 0.3s ease, transform 0.2s ease',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                                outline: 'none',
+                            }}
+                            onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
+                            onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+                        >
+                            View Saved Data
+                        </button>
+                    </div>
+
+                    {/* Conditional Rendering based on activeSection */}
+                    {activeSection === 'addData' ? (
+                        <AddData
+                            selectedScaleName={selectedScaleName}
+                            setSelectedScaleName={setSelectedScaleName}
+                            selectedType={selectedType}
+                            setSelectedType={setSelectedType}
+                            addSelectedNotes={addSelectedNotes}
+                            addOpenNotes={addOpenNotes}
                         />
-                        <div>
-                            <label>
-                                <input
-                                    type="radio"
-                                    value="scale"
-                                    checked={selectedType === 'scale'}
-                                    onChange={() => setSelectedType('scale')}
-                                />
-                                Scale
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    value="chord"
-                                    checked={selectedType === 'chord'}
-                                    onChange={() => setSelectedType('chord')}
-                                />
-                                Chord
-                            </label>
-                        </div>
-                        <button onClick={addSelectedNotes}>Add Selected Notes</button>
-                        <button onClick={addOpenNotes}>Save Open Notes</button>
-                    </div>
-
-                    {/* Display Scales */}
-                    <h2>Scales</h2>
-                    <div>
-                        {scalesList.map((notes) => (
-                            <div key={notes.id} style={{ marginBottom: '15px' }}>
-                                <div style={{ marginBottom: '5px' }}>
-                                    <strong>{notes.name}</strong>
-                                </div>
-                                <div style={{ marginBottom: '5px' }}>
-                                    <span>{notes.data.join(', ')}</span>
-                                </div>
-                                <div>
-                                    <button onClick={() => handleDeleteScale(notes.id)}>Delete</button>
-                                    <button onClick={() => handleSelectScale(notes.data)}>Display Scale</button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Display Chords */}
-                    <h2>Chords</h2>
-                    <div>
-                        {chordsList.map((notes) => (
-                            <div key={notes.id} style={{ marginBottom: '15px' }}>
-                                <div style={{ marginBottom: '5px' }}>
-                                    <strong>{notes.name}</strong>
-                                </div>
-                                <div style={{ marginBottom: '5px' }}>
-                                    <span>{notes.data.join(', ')}</span>
-                                </div>
-                                <div>
-                                    <button onClick={() => handleDeleteScale(notes.id)}>Delete</button>
-                                    <button onClick={() => handleSelectScale(notes.data)}>Display Chord</button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Display Open Notes */}
-                    <h2>Open Notes</h2>
-                    <div>
-                        {openNotesList.map((notes) => (
-                            <div key={notes.id} style={{ marginBottom: '15px' }}>
-                                <div style={{ marginBottom: '5px' }}>
-                                    <strong>{notes.name}</strong>
-                                </div>
-                                <div style={{ marginBottom: '5px' }}>
-                                    <span>{notes.data.join(', ')}</span>
-                                </div>
-                                <div>
-                                    <button onClick={() => handleDeleteScale(notes.id)}>Delete</button>
-                                    <button onClick={() => handleOpenNotes(notes.data)}>Set Open Notes</button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    ) : (
+                        <RetrieveData
+                            scalesList={scalesList}
+                            chordsList={chordsList}
+                            openNotesList={openNotesList}
+                            handleDeleteScale={handleDeleteScale}
+                            handleSelectScale={handleSelectScale}
+                            handleOpenNotes={handleOpenNotes}
+                        />
+                    )}
                 </>
             ) : (
                 <p>Please log in to view and create scales/chords/open notes.</p>

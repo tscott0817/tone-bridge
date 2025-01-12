@@ -40,18 +40,39 @@ const UserProfile = () => {
     }, [user]);
 
     return (
-            <div style={{display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
-                {user ? (
-                    <div>
-                        <h1>Welcome, {user.email}!</h1>
-                        <button onClick={handleLogout}>Logout</button>
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                maxWidth: '100%',
+            }}
+        >
+            {user ? (
+                <div>
+                    <p style={{
+                        wordWrap: 'break-word',
+                        fontSize: '20px',
+                        //backgroundColor: 'red',
+                        marginBottom: '5px',
+                        marginTop: '0px'
+                    }}>
+                        Logged in as: {user.email}
+                    </p>
+                    <button onClick={handleLogout} style={{
 
+                    }}>
+                        Logout
+                    </button>
+                    <div style={{
+
+                    }}>
                         <SaveData user={user}/>
                     </div>
-                ) : (
-                    <Auth user={user} setUser={setUser}/>
-                )}
-            </div>
+                </div>
+            ) : (
+                <Auth user={user} setUser={setUser}/>
+            )}
+        </div>
     );
 };
 
