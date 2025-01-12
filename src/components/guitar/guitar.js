@@ -41,33 +41,30 @@ const Guitar = () => {
 
     return (
         <div style={{
-            height: '100%',
-            width: '100%',
             display: 'flex',
             flexDirection: 'column',
+            height: '100%',
+            width: '100%',
+            position: 'relative', // Set the parent div to relative positioning
         }}>
             {/* Note selection and toggle */}
             <div className="noteNamesContainer" style={{
                 display: 'flex',
-                flexDirection: 'row',  // Keep everything in a row
+                flexDirection: 'row',
                 justifyContent: 'center',
-                //backgroundColor: openNotesContainerColor,
-                // backgroundColor: 'red',
-                // marginBottom: '10px',
                 height: '40px',
                 marginBottom: '8px',
                 textAlign: 'center',
-                alignItems: 'center',  // Vertically align items
-                flexWrap: 'wrap',  // Allow wrapping if necessary
-                width: '100%',  // Ensure the container takes full width
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                width: '100%',
             }}>
                 {/* Note Buttons */}
                 <div style={{
                     display: 'flex',
                     alignItems: 'center',
-                    flexWrap: 'wrap',  // Allow wrapping for notes
-                    justifyContent: 'center',  // Keep note buttons centered
-                    // backgroundColor: noColor,
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
                     backgroundColor: theme === lightColors ? lightColors.openNotesContainerColor : darkColors.openNotesContainerColor,
                     borderRadius: '5px',
                 }}>
@@ -75,7 +72,6 @@ const Guitar = () => {
                         <div key={index} style={{
                             display: 'flex',
                             alignItems: 'center',
-                            // margin: '5px',  // Optional: adds spacing between note buttons
                         }}>
                             <button
                                 onClick={() => decrementNote(index)}
@@ -84,21 +80,16 @@ const Guitar = () => {
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     padding: '5px',
-                                    //fontSize: '16px',
                                     border: 'none',
                                     backgroundColor: 'rgba(0, 0, 0, 0.0)',
                                     cursor: 'pointer',
                                 }}
                             >
-                                <FaMinus style={{
-                                    fontSize: '10px'
-                                }}/>
+                                <FaMinus style={{fontSize: '10px'}}/>
                             </button>
-                            <span style={{
-                                fontSize: '20px',
-                            }}>
-                                {name}
-                            </span>
+                            <span style={{fontSize: '20px'}}>
+                        {name}
+                    </span>
                             <button
                                 onClick={() => incrementNote(index)}
                                 style={{
@@ -124,59 +115,42 @@ const Guitar = () => {
                         borderRadius: '5px',
                         cursor: 'pointer',
                         fontSize: '18px',
-                        display: 'flex', // Use flexbox
-                        justifyContent: 'center', // Center content horizontally
-                        alignItems: 'center', // Center content vertically
-                        width: '30px', // Optional: Set width for a square button
-                        height: '30px', // Optional: Set height for a square button
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '30px',
+                        height: '30px',
                     }}>
-                        <RiResetLeftLine style={{ fontSize: '25px' }} />
+                        <RiResetLeftLine style={{fontSize: '25px'}}/>
                     </button>
-                </div>
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: '100%',
-                    position: 'fixed',
-                    left: 10,
-                    // marginLeft: '10px',
-                }}>
-                    <button onClick={toggleOctaves}
-                            style={{
-                                backgroundColor: showOctave ? buttonCompressed : noColor,
-                                border: 'none',
-                                borderRadius: '5px',
-                                cursor: 'pointer',
-                                width: '35px',
-                                height: '30px',
-                                fontSize: '20px',
-                            }}>
-                        {showOctave ? '8' : '8'}<sup>va</sup>
-                    </button>
-                    {/*<button onClick={resetNotes} style={{*/}
-                    {/*    marginLeft: '10px',*/}
-                    {/*    // backgroundColor: showOctave ? buttonCompressed : noColor,*/}
-                    {/*    backgroundColor: noColor,*/}
-                    {/*    border: 'none',*/}
-                    {/*    borderRadius: '5px',*/}
-                    {/*    cursor: 'pointer',*/}
-                    {/*    width: '110px',*/}
-                    {/*    height: '30px',*/}
-                    {/*    fontSize: '18px',*/}
-                    {/*}}>*/}
-                    {/*    Reset Open*/}
-                    {/*</button>*/}
                 </div>
             </div>
 
+            {/* 8va button positioned at top-left of the container */}
+            <div style={{
+                position: 'absolute',  // Set absolute positioning
+                //top: '10px',  // Adjust top position
+                left: '10px',  // Adjust left position
+            }}>
+                <button onClick={toggleOctaves}
+                        style={{
+                            backgroundColor: showOctave ? buttonCompressed : noColor,
+                            border: 'none',
+                            borderRadius: '5px',
+                            cursor: 'pointer',
+                            width: '35px',
+                            height: '30px',
+                            fontSize: '20px',
+                        }}>
+                    {showOctave ? '8' : '8'}<sup>va</sup>
+                </button>
+            </div>
 
             {/* Guitar neck and headstock */}
             <div className="guitarContainer" style={{
                 height: '100%',
                 width: '100%',
                 backgroundColor: guitarBGColor,
-                //marginBottom: '10px',
                 display: 'flex',
                 flexDirection: 'row',
             }}>
@@ -194,7 +168,6 @@ const Guitar = () => {
                     display: 'flex',
                     zIndex: 1,
                 }}>
-                    {/* Pass showOctave state to Neck component */}
                     <Neck openNotesProp={openNotes} showOctave={showOctave}/>
                 </div>
             </div>

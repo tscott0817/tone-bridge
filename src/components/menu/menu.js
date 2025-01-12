@@ -76,8 +76,9 @@ const Menu = () => {
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        width: '40px',
-                        height: '40px',
+                        width: '35px',
+                        height: '35px',
+                        //backgroundColor: 'red',
                     }}
                 >
                     <IoCloseOutline style={{ fontSize: '200%' }} />
