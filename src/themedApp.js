@@ -28,6 +28,7 @@ function ThemedApp() {
     const minWidth = '1000px';
     const { theme, toggleTheme } = useThemeContext();
     const [currentInstrument, setCurrentInstrument] = useState('Guitar');
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     // const instruments = {
     //     Guitar: <Guitar openNotes={openNotes} setOpenNotes={setOpenNotes} initialNotes={initialNotes}/>,
