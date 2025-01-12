@@ -17,6 +17,8 @@ import {useOpenNotesContext} from "../../stateManager/OpenNotesContext";
 import * as lightColors from "../../stateManager/lightMode";
 import * as darkColors from "../../stateManager/darkMode";
 import {useThemeContext} from "../../stateManager/ThemeContext";
+import tuning from '../../img/tuning.png';
+import tuningFork from '../../img/tuning-fork.png';
 
 
 const Guitar = () => {
@@ -59,6 +61,13 @@ const Guitar = () => {
                 flexWrap: 'wrap',
                 width: '100%',
             }}>
+                <img src={tuningFork} alt="My Icon" style={{
+                    width: '30px',
+                    height: '30px',
+                    //backgroundColor: 'red',
+                    marginRight: '5px',
+                    //marginLeft: '50px'
+                }}/>
                 {/* Note Buttons */}
                 <div style={{
                     display: 'flex',
