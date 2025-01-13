@@ -17,7 +17,7 @@ import {useOpenNotesContext} from "../../stateManager/OpenNotesContext";
 import * as lightColors from "../../stateManager/lightMode";
 import * as darkColors from "../../stateManager/darkMode";
 import {useThemeContext} from "../../stateManager/ThemeContext";
-import tuning from '../../img/tuning.png';
+//import tuning from '../../img/tuning.png';
 import tuningFork from '../../img/tuning-fork.png';
 
 
