@@ -13,7 +13,7 @@ https://tone-bridge.vercel.app/
 ## Usage
 
 - Use the guitar fretboard diagram to select and display notes anywhere
-- The program will automatically detect any chords or scales that are present with the collection of curren notes
+- The program will automatically detect any chords or scales that are present with the collection of current notes
 - In the 'Settings' menu (cog wheel), choose from a list of existing scales and chords with any tonic/root note.
   - These will be placed directly onto the fretboard diagram
 
@@ -25,7 +25,7 @@ https://tone-bridge.vercel.app/
 
 ## Tech Used
 
-- Fonted created with React.js
+- Fronted created with React.js
 - Logic constructed with Tone.js and Tonal.js
 - Backend built with PostgreSQL and Supabase
 
