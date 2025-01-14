@@ -66,23 +66,23 @@ function ThemedApp() {
                         }}>
                             <span style={{color: 'black', cursor: 'pointer'}}>About</span>
                             <Menu/>
-                            <div style={{
-                                cursor: 'pointer',
-                                marginRight: '10px',
-                                paddingTop: '3px',
-                                //backgroundColor: 'blue'
-                            }}>
-                                {theme === lightColors ? (
-                                    <FaMoon onClick={toggleTheme} style={{
-                                        color: lightColors.tempColor,
-                                        fontSize: '25px',
-                                        transform: 'scaleX(-1)'
-                                    }}/>
-                                ) : (
-                                    <FaSun onClick={toggleTheme}
-                                           style={{color: darkColors.tempColor, fontSize: '24px'}}/>
-                                )}
-                            </div>
+                            {/*<div style={{*/}
+                            {/*    cursor: 'pointer',*/}
+                            {/*    marginRight: '10px',*/}
+                            {/*    paddingTop: '3px',*/}
+                            {/*    //backgroundColor: 'blue'*/}
+                            {/*}}>*/}
+                            {/*    {theme === lightColors ? (*/}
+                            {/*        <FaMoon onClick={toggleTheme} style={{*/}
+                            {/*            color: lightColors.tempColor,*/}
+                            {/*            fontSize: '25px',*/}
+                            {/*            transform: 'scaleX(-1)'*/}
+                            {/*        }}/>*/}
+                            {/*    ) : (*/}
+                            {/*        <FaSun onClick={toggleTheme}*/}
+                            {/*               style={{color: darkColors.tempColor, fontSize: '24px'}}/>*/}
+                            {/*    )}*/}
+                            {/*</div>*/}
                         </div>
                     </div>
                     {/* TODO: This is for swapping between instruments. Not added currently */}
