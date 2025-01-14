@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 import PlayNotes from "./components/playNotes";
 import Guitar from "./components/guitar/guitar";
