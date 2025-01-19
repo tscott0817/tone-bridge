@@ -25,7 +25,7 @@ import {FaSun, FaMoon} from "react-icons/fa";
 const Piano = () => <div style={{ color: 'white' }}>Piano Component</div>;
 
 function ThemedApp() {
-    const minWidth = '1000px';
+    const minWidth = '1200px';
     const { theme, toggleTheme } = useThemeContext();
     const [currentInstrument, setCurrentInstrument] = useState('Guitar');
     const [isMenuOpen, setIsMenuOpen] = useState(false);

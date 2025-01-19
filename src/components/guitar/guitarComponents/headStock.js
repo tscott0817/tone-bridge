@@ -104,6 +104,7 @@ const Headstock = ({ openNotesProp, showOctave }) => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
+                    cursor: 'pointer',
                     marginTop: index === 0 ? '5px' : '0', // Add margin only to the first note
                     marginBottom: index === strings.length - 1 ? '7.5px' : '0', // Add margin only to the last note
                 };

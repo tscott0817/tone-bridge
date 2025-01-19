@@ -162,6 +162,7 @@ const Neck = ({ openNotesProp, showOctave }) => {
                             justifyContent: 'center',
                             alignItems: 'center',
                             zIndex: 2,
+                            cursor: 'pointer'
                         };
 
                         return (

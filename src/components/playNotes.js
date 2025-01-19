@@ -5,6 +5,8 @@ import { FaCirclePlay } from "react-icons/fa6";
 import * as lightColors from "../stateManager/lightMode";
 import * as darkColors from "../stateManager/darkMode";
 import {useThemeContext} from "../stateManager/ThemeContext";
+import {noColor} from "../stateManager/darkMode";
+import {buttonCompressed} from "../stateManager/lightMode";
 
 const PlayNotes = () => {
     const { selectedNotes, selectNote, unselectNote, setScaleDegrees, setChordDegrees } = useNoteContext();
@@ -51,12 +53,49 @@ const PlayNotes = () => {
             alignItems: 'center',
             justifyContent: 'center'
         }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <button onClick={playNotesSynth}>
-                    {/*Play Current Notes*/}
-                    <FaCirclePlay />
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+            }}>
+                <button
+                    onClick={playNotesSynth}
+                    style={{
+                        width: '40px',
+                        height: '40px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: noColor,
+                        border: 'none',
+                        cursor: 'pointer',
+                    }}
+                >
+                    <FaCirclePlay style={{
+                        width: '100%',
+                        height: '100%'
+                    }}/>
                 </button>
-                <button onClick={handleClear}>Clear All</button>
+                <button
+                    onClick={handleClear}
+                    onMouseDown={(e) => (e.target.style.backgroundColor = buttonCompressed)} // Temporary color on click
+                    // onMouseUp={(e) => (e.target.style.backgroundColor = '#dbdbdb')} // Revert to original color
+                    // onMouseLeave={(e) => (e.target.style.backgroundColor = '##dbdbdb')} // Revert if mouse leaves
+                    onMouseUp={(e) => (e.target.style.backgroundColor = noColor)} // Revert to original color
+                    onMouseLeave={(e) => (e.target.style.backgroundColor = noColor)} // Revert if mouse leaves
+                    style={{
+                        // backgroundColor: '#dbdbdb',
+                        backgroundColor: noColor,
+                        border: 'none',
+                        borderRadius: '10%',
+                        margin: '5px',
+                        padding: '5px',
+                        cursor: 'pointer',
+                        transition: 'background-color 0.2s ease', // Smooth transition
+                    }}
+                >
+                    Clear Notes
+                </button>
             </div>
         </div>
     );
