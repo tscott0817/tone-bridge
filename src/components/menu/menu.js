@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { IoMdSettings } from "react-icons/io";
 import { IoCloseOutline } from "react-icons/io5";
 import SetScale from "./menuOptions/setScale";
 import SetChord from "./menuOptions/setChord";
 import UserProfile from "./menuOptions/userProfile";
 
-const Menu = () => {
+const Menu = ({isMenuOpen, toggleMenuProp }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [activeTab, setActiveTab] = useState('scale');
+    const menuRef = useRef(null);
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
+        toggleMenuProp();
     };
 
     const showScale = () => {
@@ -41,14 +43,15 @@ const Menu = () => {
                     alignItems: 'center',
                     width: '40px',
                     height: '40px',
-                    pointerEvents: isOpen ? 'none' : 'auto',
+                    pointerEvents: 'auto',
                 }}
             >
-                {isOpen ? <IoMdSettings style={{ fontSize: '200%' }} /> : <IoMdSettings style={{ fontSize: '200%' }} />}
+                <IoMdSettings style={{fontSize: '200%'}}/>
             </button>
 
             {/* Sliding menu */}
             <div
+                ref={menuRef}
                 style={{
                     position: 'fixed',
                     top: '0',
@@ -81,7 +84,7 @@ const Menu = () => {
                         //backgroundColor: 'red',
                     }}
                 >
-                    <IoCloseOutline style={{ fontSize: '200%' }} />
+                    <IoCloseOutline style={{fontSize: '200%'}}/>
                 </button>
 
                 {/* Toggle buttons */}
@@ -173,8 +176,8 @@ const Menu = () => {
                     // boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
                     // borderRadius: '10px',
                 }}>
-                    {activeTab === 'scale' && <SetScale />}
-                    {activeTab === 'chord' && <SetChord />}
+                    {activeTab === 'scale' && <SetScale/>}
+                    {activeTab === 'chord' && <SetChord/>}
                     {/*{activeTab === 'userProfile' && <UserProfile />}*/}
                 </div>
                 <div style={{
@@ -184,7 +187,7 @@ const Menu = () => {
                     boxSizing: 'border-box', // Include padding in width calculations
                     //maxHeight: '100%',   // Ensure it respects the parent's height
                 }}>
-                    {activeTab === 'userProfile' && <UserProfile />}
+                    {activeTab === 'userProfile' && <UserProfile/>}
                 </div>
             </div>
         </div>

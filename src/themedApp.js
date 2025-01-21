@@ -24,11 +24,19 @@ import {FaSun, FaMoon} from "react-icons/fa";
 // Placeholder components for other instruments
 const Piano = () => <div style={{ color: 'white' }}>Piano Component</div>;
 
-function ThemedApp() {
+const ThemedApp = () => {
     const minWidth = '1200px';
     const { theme, toggleTheme } = useThemeContext();
     const [currentInstrument, setCurrentInstrument] = useState('Guitar');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const toggleMenuProp = () => {
+        setIsMenuOpen((prev) => !prev);
+    };
+
+    const clickOutsideMenuProp = () => {
+        setIsMenuOpen(false);
+    }
 
     // const instruments = {
     //     Guitar: <Guitar openNotes={openNotes} setOpenNotes={setOpenNotes} initialNotes={initialNotes}/>,
@@ -38,7 +46,10 @@ function ThemedApp() {
     return (
         <div className="themedApp">
                 <div style={{
-                    width: '100vw',
+                    // width: '100vw',
+                    width: isMenuOpen ? 'calc(100vw - 300px)' : '100vw', // Adjust width dynamically
+                    //transition: 'width 0.3s ease', // Smooth transition
+                    transition: 'width 0.3s ease-in-out',
                     height: '100vh',
                     backgroundColor: theme === lightColors ? lightColors.mainBGColor : darkColors.mainBGColor,
                     display: 'flex',
@@ -64,8 +75,17 @@ function ThemedApp() {
                             //backgroundColor: 'red',
                             gap: '20px',
                         }}>
-                            <span style={{color: 'black', cursor: 'pointer'}}>About</span>
-                            <Menu/>
+                            {/*<span style={{color: 'black', cursor: 'pointer'}}>About</span>*/}
+                            {/* Open About in a new tab */}
+                            <a
+                                href="/about"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{ color: 'black', cursor: 'pointer', textDecoration: 'none' }}
+                            >
+                                About
+                            </a>
+                            <Menu isMenuOpen={isMenuOpen} toggleMenuProp={toggleMenuProp} clickOutsideMenuProp={clickOutsideMenuProp}/>
                             {/*<div style={{*/}
                             {/*    cursor: 'pointer',*/}
                             {/*    marginRight: '10px',*/}
