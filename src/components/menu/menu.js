@@ -49,19 +49,22 @@ const Menu = ({isMenuOpen, toggleMenuProp }) => {
                 <IoMdSettings style={{fontSize: '200%'}}/>
             </button>
 
-            {/* Sliding menu */}
             <div
                 ref={menuRef}
                 style={{
                     position: 'fixed',
-                    top: '0',
+                    top: '50px',
                     right: '0',
+                    bottom: '0', // Ensure the bottom touches the page bottom
+                    //marginTop: '50px', // Adjust this if you want an offset from the top
                     width: '300px',
-                    height: '100%',
-                    backgroundColor: '#f7f7f7',
+                    minHeight: '600px',
+                    backgroundColor: '#f4f3f2',
+                    //backgroundColor: 'yellow',
                     zIndex: 1000,
                     // paddingTop: '10px',
-                    boxShadow: '-2px 0 5px rgba(0, 0, 0, 0.25)',
+                    // boxShadow: '-5px 0 5px rgba(0, 0, 0, 0.25)',
+                    boxShadow: '-4px 0px 5px -5px #616161',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'flex-start',
@@ -70,22 +73,22 @@ const Menu = ({isMenuOpen, toggleMenuProp }) => {
                 }}
             >
                 {/* Close button inside the menu */}
-                <button
-                    onClick={toggleMenu}
-                    style={{
-                        backgroundColor: 'rgba(0, 0, 0, 0.0)',
-                        border: 'none',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        width: '35px',
-                        height: '35px',
-                        //backgroundColor: 'red',
-                    }}
-                >
-                    <IoCloseOutline style={{fontSize: '200%'}}/>
-                </button>
+                {/*<button*/}
+                {/*    onClick={toggleMenu}*/}
+                {/*    style={{*/}
+                {/*        backgroundColor: 'rgba(0, 0, 0, 0.0)',*/}
+                {/*        border: 'none',*/}
+                {/*        cursor: 'pointer',*/}
+                {/*        display: 'flex',*/}
+                {/*        justifyContent: 'center',*/}
+                {/*        alignItems: 'center',*/}
+                {/*        width: '35px',*/}
+                {/*        height: '35px',*/}
+                {/*        //backgroundColor: 'red',*/}
+                {/*    }}*/}
+                {/*>*/}
+                {/*    <IoCloseOutline style={{fontSize: '200%'}}/>*/}
+                {/*</button>*/}
 
                 {/* Toggle buttons */}
                 <div style={{
@@ -94,11 +97,13 @@ const Menu = ({isMenuOpen, toggleMenuProp }) => {
                     gap: '20px',
                     boxShadow: '0px 10px 10px -5px rgba(0, 0, 0, 0.1)',
                     paddingBottom: '10px',
+                    paddingTop: '10px',
                 }}>
                     <button
                         onClick={showScale}
                         style={{
                             //padding: '10px 20px',
+                            zIndex: 2000,
                             padding: '5px',
                             cursor: 'pointer',
                             backgroundColor: activeTab === 'scale' ? '#007BFF' : '#cccccc', // Blue if selected, gray if not
@@ -171,6 +176,7 @@ const Menu = ({isMenuOpen, toggleMenuProp }) => {
                     marginRight: '10px',
                     marginLeft: '10px',
                     marginTop: '10px',
+                    zIndex: 1,
                     //backgroundColor: 'rgba(0, 0, 0, 0.0)',
                     //marginTop: '10px',
                     // boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
@@ -183,9 +189,15 @@ const Menu = ({isMenuOpen, toggleMenuProp }) => {
                 <div style={{
                     //overflowX: 'hidden', // Prevent horizontal scrolling
                     //overflowY: 'auto',   // Allow vertical scrolling
+                    position: 'absolute',
+                    top: '80px',
+                    bottom: '0',
+                    zIndex: 0,
+                    //height: '85%',
                     width: '100%',       // Ensure it doesn't exceed the parent's width
                     boxSizing: 'border-box', // Include padding in width calculations
                     //maxHeight: '100%',   // Ensure it respects the parent's height
+                    //backgroundColor: 'teal'
                 }}>
                     {activeTab === 'userProfile' && <UserProfile/>}
                 </div>

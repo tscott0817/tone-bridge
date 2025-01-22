@@ -131,9 +131,11 @@ const SaveData = ({ user }) => {
 
     return (
         <div style={{
-            marginTop: '24px',
+            //marginTop: '24px',
             width: '90%',
             marginLeft: '5%',
+            height: '95%',
+            //backgroundColor: 'purple'
         }}>
             {user ? (
                 <>

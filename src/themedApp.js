@@ -46,10 +46,9 @@ const ThemedApp = () => {
     return (
         <div className="themedApp">
                 <div style={{
-                    // width: '100vw',
-                    width: isMenuOpen ? 'calc(100vw - 300px)' : '100vw', // Adjust width dynamically
-                    //transition: 'width 0.3s ease', // Smooth transition
-                    transition: 'width 0.3s ease-in-out',
+                    width: '100vw',
+                    //width: isMenuOpen ? 'calc(100vw - 300px)' : '100vw', // Adjust width dynamically
+                    //transition: 'width 0.3s ease-in-out',
                     height: '100vh',
                     backgroundColor: theme === lightColors ? lightColors.mainBGColor : darkColors.mainBGColor,
                     display: 'flex',
@@ -58,7 +57,7 @@ const ThemedApp = () => {
                 }}>
                     <div style={{
                         minHeight: '50px',
-                        minWidth: minWidth,
+                        //minWidth: minWidth,
                         backgroundColor: theme === lightColors ? lightColors.headerBGColor : darkColors.headerBGColor,
                         paddingRight: '10px',
                         //overflow: 'hidden',
@@ -74,6 +73,7 @@ const ThemedApp = () => {
                             alignItems: 'center',
                             //backgroundColor: 'red',
                             gap: '20px',
+                            overflow: 'hidden'
                         }}>
                             {/*<span style={{color: 'black', cursor: 'pointer'}}>About</span>*/}
                             {/* Open About in a new tab */}
@@ -126,32 +126,37 @@ const ThemedApp = () => {
                         ))}
                     </div>*/}
                     <div style={{
-                        height: '450px',
-                        minHeight: '450px',
-                        minWidth: minWidth,
-                        backgroundColor: theme === lightColors ? lightColors.guitarContainerColor : darkColors.guitarContainerColor,
-                        padding: '10px',
-                        overflow: 'hidden',
-                        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.3)',
-                        //boxShadow: '0px 10px 15px -3px rgba(0, 0, 0, 0.3)',
-                        marginBottom: '25px',
-                        marginTop: '25px',
+                        width: isMenuOpen ? 'calc(100vw - 300px)' : '100vw',
+                        transition: 'width 0.3s ease-in-out',
                     }}>
-                        <Guitar />
-                        {/*{instruments[currentInstrument]}*/}
-                    </div>
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        minHeight: '100px',
-                        minWidth: minWidth,
-                        backgroundColor: theme === lightColors ? lightColors.bottomDisplayBackground : darkColors.bottomDisplayBackground,
-                        padding: '10px',
-                        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.3)',
-                    }}>
-                        <PlayNotes/>
-                        <DisplayNotes/>
-                        <DetectChord/>
+                        <div style={{
+                            height: '450px',
+                            minHeight: '450px',
+                            minWidth: minWidth,
+                            backgroundColor: theme === lightColors ? lightColors.guitarContainerColor : darkColors.guitarContainerColor,
+                            padding: '10px',
+                            overflow: 'auto',
+                            boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.3)',
+                            //boxShadow: '0px 10px 15px -3px rgba(0, 0, 0, 0.3)',
+                            marginBottom: '25px',
+                            marginTop: '25px',
+                        }}>
+                            <Guitar />
+                            {/*{instruments[currentInstrument]}*/}
+                        </div>
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            minHeight: '100px',
+                            minWidth: minWidth,
+                            backgroundColor: theme === lightColors ? lightColors.bottomDisplayBackground : darkColors.bottomDisplayBackground,
+                            padding: '10px',
+                            boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.3)',
+                        }}>
+                            <PlayNotes/>
+                            <DisplayNotes/>
+                            <DetectChord/>
+                        </div>
                     </div>
                 </div>
         </div>

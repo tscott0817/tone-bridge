@@ -5,7 +5,11 @@ const RetrieveData = ({ scalesList, chordsList, openNotesList, handleDeleteScale
 
     return (
         <div style={{
-            //backgroundColor: 'red'
+            //backgroundColor: 'red',
+            position: 'absolute',
+            top: '80px',
+            bottom: '0',
+            width: '90%',
         }}>
             {/* Toggle buttons for sections */}
             <div style={{
@@ -84,7 +88,12 @@ const RetrieveData = ({ scalesList, chordsList, openNotesList, handleDeleteScale
 
 
             {/* Conditionally render based on active section */}
-            <div>
+            <div style={{
+                //backgroundColor: 'lightblue',
+                position: 'absolute',
+                top: '100px',
+                bottom: '0',
+            }}>
                 {activeSection === 'scales' && (
                     <>
                         {/*<div style={{*/}
@@ -95,6 +104,7 @@ const RetrieveData = ({ scalesList, chordsList, openNotesList, handleDeleteScale
                         {/*</div>*/}
                         <div style={{
                             overflowY: 'auto',
+                            height: '100%',
                             maxHeight: '400px',
                         }}>
                             {scalesList.map((notes) => (
@@ -125,6 +135,7 @@ const RetrieveData = ({ scalesList, chordsList, openNotesList, handleDeleteScale
                         {/*</div>*/}
                         <div style={{
                             overflowY: 'auto',
+                            height: '100%',
                             maxHeight: '400px',
                         }}>
                             {chordsList.map((notes) => (
@@ -155,6 +166,7 @@ const RetrieveData = ({ scalesList, chordsList, openNotesList, handleDeleteScale
                         {/*</div>*/}
                         <div style={{
                             overflowY: 'auto',
+                            height: '100%',
                             maxHeight: '400px',
                         }}>
                             {openNotesList.map((notes) => (

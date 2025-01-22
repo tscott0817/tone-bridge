@@ -45,10 +45,16 @@ const UserProfile = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 maxWidth: '100%',
+                height: '100%',
+                //backgroundColor: 'blue'
             }}
         >
             {user ? (
-                <div>
+                <div style={{
+                    //backgroundColor: 'green',
+                    height: '100%',
+                    position: 'relative',
+                }}>
                     <p style={{
                         wordWrap: 'break-word',
                         fontSize: '20px',
@@ -59,12 +65,17 @@ const UserProfile = () => {
                         Logged in as: {user.email}
                     </p>
                     <button onClick={handleLogout} style={{
-
+                        width: '90%',
+                        //padding: '2px'
                     }}>
                         Logout
                     </button>
                     <div style={{
-
+                        //backgroundColor: 'rebeccapurple',
+                        position: 'absolute',
+                        top: '80px',
+                        bottom: '0',
+                        //height: '80%',
                     }}>
                         <SaveData user={user}/>
                     </div>
